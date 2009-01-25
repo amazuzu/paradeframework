@@ -1,0 +1,32 @@
+= Set-up =
+
+create xml file like my-context.xml
+{{{
+<context>
+	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo">
+		<property name="bar" ref="bar" />
+	</bean>
+	
+	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
+		<ref>groo</ref>
+	</bean>
+	
+	<bean name="foo" class="org.amazuzu.ioc.paradetest.Foo">
+		<constructor>
+			<ref>bar</ref>
+			<bean class="org.amazuzu.ioc.paradetest.Baz" />
+		</constructor>
+	</bean>
+</context>
+}}}
+
+Look at first bean declaration named "groo". Bean Factory will create a singleton bean of name *groo* as instance of class *Groo* and initialize property *bar* by reference to instance named *bar* of class *Bar*
+ Use tag <bean> to create singleton bean 
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
