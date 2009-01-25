@@ -129,8 +129,9 @@ Sure Parade supports it
 You could see both member and setter injection. If Inject annotation without name, same name as property assumes.
 
 === Use of beans instantiated in MXML ===
-
+{{{
 override protected function customBeanRegistration():void{
     registerBean("button1", Application.application.button1);
     registerBean("theCheckBox", Application.application.boxCheck);
 }
+}}}
