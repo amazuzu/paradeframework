@@ -1,0 +1,16 @@
+<context>
+	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo">
+		<property name="bar" ref="bar" />
+	</bean>
+	
+	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
+		<ref>groo</ref>
+	</bean>
+	
+	<bean name="foo" class="org.amazuzu.ioc.paradetest.Foo">
+		<constructor>
+			<ref>bar</ref>
+			<bean class="org.amazuzu.ioc.paradetest.Baz" />
+		</constructor>
+	</bean>
+</context>

@@ -1,0 +1,28 @@
+<context>
+	
+
+	<bean name="ins1" class="org.amazuzu.ioc.paradetest.recursion.Ins1">
+		<constructor>
+			<ref>ins2</ref>
+		</constructor>
+	</bean>
+	
+	<bean name="ins2" class="org.amazuzu.ioc.paradetest.recursion.Ins2">
+		<constructor>
+			<ref>ins3</ref>
+		</constructor>
+	</bean>
+
+	<bean name="ins3" class="org.amazuzu.ioc.paradetest.recursion.Ins3">
+		<constructor>
+			<ref>ins4</ref>
+		</constructor>
+	</bean>
+	
+	<bean name="ins4" class="org.amazuzu.ioc.paradetest.recursion.Ins4">
+		<ref>ins1</ref>
+	</bean>
+	
+	
+	
+</context>

@@ -1,0 +1,24 @@
+<context>
+	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo">
+		<property name="bar">
+			<bean class="org.amazuzu.ioc.paradetest.Bar" />
+		</property>
+		<property name="list">
+			<list>
+				<bean class="org.amazuzu.ioc.paradetest.Baz" />
+				<bean class="org.amazuzu.ioc.paradetest.Bar" />
+			</list>
+		</property>
+		<property name="theMap">
+			<map>
+				<property name="baz">
+					<class>org.amazuzu.ioc.paradetest.Baz</class>
+				</property>
+				<property name="bar">
+					<class>org.amazuzu.ioc.paradetest.Bar</class>
+				</property>
+			</map>
+		</property>
+	</bean>
+	
+</context>

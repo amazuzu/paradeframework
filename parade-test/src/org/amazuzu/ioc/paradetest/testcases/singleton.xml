@@ -1,0 +1,4 @@
+<context>
+	<bean name="grooSingleton" class="org.amazuzu.ioc.paradetest.Groo"  />
+	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo" singleton="false"/>
+</context>

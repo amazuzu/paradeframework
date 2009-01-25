@@ -1,0 +1,29 @@
+<context>
+	
+
+	<bean name="b" class="org.amazuzu.ioc.paradetest.mixtestcase.B">
+		<constructor>
+			<ref>a</ref>
+		</constructor>
+	</bean>
+
+	
+	
+	
+	<bean name="d" class="org.amazuzu.ioc.paradetest.mixtestcase.D">
+		<constructor>
+			<ref>a</ref>
+			<property name="b" ref="b" />
+			<ref>c</ref>
+		</constructor>
+	</bean>
+	
+	<bean name="c" class="org.amazuzu.ioc.paradetest.mixtestcase.C">
+		<constructor>
+			<ref>a</ref>
+			<ref>b</ref>
+		</constructor>
+	</bean>
+	
+	<bean name="a" class="org.amazuzu.ioc.paradetest.mixtestcase.A" />
+</context>
