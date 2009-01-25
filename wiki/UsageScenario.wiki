@@ -1,32 +1,129 @@
-= Set-up =
+== XML context definition ==
 
 create xml file like my-context.xml
 {{{
 <context>
-	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo">
-		<property name="bar" ref="bar" />
-	</bean>
-	
-	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
-		<ref>groo</ref>
-	</bean>
-	
-	<bean name="foo" class="org.amazuzu.ioc.paradetest.Foo">
-		<constructor>
-			<ref>bar</ref>
-			<bean class="org.amazuzu.ioc.paradetest.Baz" />
-		</constructor>
-	</bean>
+
+    <bean name="groo" class="org.amazuzu.ioc.paradetest.Groo">
+        <property name="bar" ref="bar" />
+    </bean>
+
+    <bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
+        <ref>groo</ref>
+    </bean>
+
+    <bean name="foo" class="org.amazuzu.ioc.paradetest.Foo">
+        <constructor>
+            <ref>bar</ref>
+            <bean class="org.amazuzu.ioc.paradetest.Baz" />
+        </constructor>
+    </bean>
+
 </context>
 }}}
 
-Look at first bean declaration named "groo". Bean Factory will create a singleton bean of name *groo* as instance of class *Groo* and initialize property *bar* by reference to instance named *bar* of class *Bar*
- Use tag <bean> to create singleton bean 
+  * Look at first bean declaration named "groo". Bean Factory will create a singleton    bean of name *groo* as instance of class *Groo* and initialize property *bar* by reference to instance named *bar* of class *Bar*. Note property name  (bar) is the same as a reference, so {{{<ref>bar</bar>}}} could be used instead.
 
+== BeanFactory ==
 
-= Details =
+To initialize BeanFactory you should extends a {{{BeanFactory}}} and provide context files by overriding corresponding method:
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+{{{
+public class YourBeanFactory extends BeanFactory
+{
+    [Embed(source = "contextes/my-context.xml", mimeType="application/octet-stream")] 
+    private static var my_context:Class;
+    	
+		
+    public function YourBeanFactory()
+    {
+        super();
+        Foo;
+        Bar;
+        Baz;
+        Groo;
+    }
+		
+    override protected function getContextResourceClasses():Array /* of Class */{
+        return [my_context];
+    } 
+}
+}}}
+
+Note, in order to instantiate as3 classes you should declare it in code (see constructor). Also dont forget to make {{{YourBeanFactory}}} as a singleton to access it from everywhere.
+
+== Usage ==
+{{{
+public function initFactory():void{
+    var factory:BeanFactory = new YourBeanFactory();
+    factory.loadContext();
+    var groo:Groo = factory.getBean("groo") as Groo;
+}}}
+
+== IOC features ==
+
+=== List of values ===
+{{{
+<property name="list">
+    <list>
+        <bean class="org.amazuzu.ioc.paradetest.Baz" />
+        <bean class="org.amazuzu.ioc.paradetest.Bar" />
+    </list>
+</property>
+}}}
+like {{{someObject.list = [Baz, Bar];}}}
+=== Map ===
+{{{
+<property name="someMap">
+   <map>
+        <property name="position">
+	    <class>org.foo.Position</class>
+        </property>
+        <property name="dimenstion">
+	    <class>org.foo.Dimension</class>
+        </property>
+    </map>
+</property>				
+}}}
+like {{{someObject.someMap = {position: Position, dimension: Dimension};}}}
+
+=== Singleton ===
+By default declared beans are singletons, but you can override default property in bean tag by specifying singleton attribute:
+{{{
+<context>
+    <bean name="grooSingleton" class="org.amazuzu.ioc.paradetest.Groo"  />
+    <bean name="groo" class="org.amazuzu.ioc.paradetest.Groo" singleton="false"/>
+</context>
+}}}
+
+=== Annotations ===
+Sure Parade supports it
+{{{
+ public class AnnoFoo
+    {
+		
+        [Inject("groo")]
+        public var foobarbaz:Groo;
+		
+        [Inject]
+        public var bar:Bar;
+		
+        private var _foo:Foo;
+		
+        [Inject]
+        public function set foo(_foo:Foo):void{
+            this._foo = _foo;
+        }
+		
+        public function get foo():Foo{
+            return _foo;
+        }
+		
+		
+        public function AnnoFoo()
+        {
+        }
+
+    }
+}}}
+You could see both member and setter injection. If Inject annotation without name, same name as property assumes.
