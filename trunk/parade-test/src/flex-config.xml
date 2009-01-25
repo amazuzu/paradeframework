@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<flex-config>
+    <compiler>
+      <!-- namespaces>
+         <namespace>
+            <uri>http://uimodeller.com</uri>
+            <manifest>mxml-manifest.xml</manifest>
+         </namespace>
+      </namespaces-->
+      <keep-as3-metadata>
+			<name>Inject</name>
+	  </keep-as3-metadata>		
+	  <!-- keep-generated-actionscript>true</keep-generated-actionscript-->	
+	  <!-- verbose-stacktraces>true</verbose-stacktraces>	
+	  <source-path>
+	       <path-element>.</path-element>
+	   </source-path>
+   		<include-libraries>
+		    <library>/../libs/FlexUnit.swc</library>
+		</include-libraries-->
+    </compiler>
+</flex-config>
