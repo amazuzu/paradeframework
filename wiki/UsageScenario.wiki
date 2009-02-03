@@ -127,6 +127,12 @@ Sure Parade supports it
     }
 }}}
 You could see both member and setter injection. If Inject annotation without name, same name as property assumes.
+Note. Annotated properties could be initialized only by this way:
+{{{
+var annoFoo:AnnoFoo = new AnnoFoo();
+beanFactory.passiveInit(annoFoo);
+}}}
+
 
 === Use of beans instantiated in MXML ===
 {{{
