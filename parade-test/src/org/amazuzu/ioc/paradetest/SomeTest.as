@@ -29,6 +29,9 @@ package org.amazuzu.ioc.paradetest
     	
     	[Embed(source = "recursion/recursion.xml", mimeType="application/octet-stream")] 
     	private static var recursion:Class;
+    	
+    	[Embed(source = "testcases/justannot.xml", mimeType="application/octet-stream")] 
+    	private static var justannot:Class;
 		
 		
 		public function testConstructor():void{
@@ -69,15 +72,7 @@ package org.amazuzu.ioc.paradetest
 			assertTrue(factory.resolved);
 		}
 		
-		public function testAnnotations():void{
-			var factory:BeanFactory = new TestBeanFactory(cyclic);
-			factory.loadContext();
-			var af:AnnoFoo = new AnnoFoo();
-			factory.passiveInit(af);
-			assertTrue(af.foobarbaz != null);
-			assertTrue(af.bar != null);
-			assertTrue(af.foo != null);
-		}
+	
 		
 		public function testSingleton():void{
 			var factory:BeanFactory = new TestBeanFactory(singleton);
@@ -100,6 +95,25 @@ package org.amazuzu.ioc.paradetest
 			assertNotNull("ins2",factory.getBean("ins2") as Ins2);
 			assertNotNull("ins3",factory.getBean("ins3") as Ins3);
 			assertNotNull("ins4",factory.getBean("ins4") as Ins4);
+		}
+		
+		public function testPassiveAnnotativeInitialize():void{
+			var factory:BeanFactory = new TestBeanFactory(cyclic);
+			factory.loadContext();
+			var af:AnnoFoo = new AnnoFoo();
+			factory.passiveInit(af);
+			assertTrue(af.foobarbaz != null);
+			assertTrue(af.bar != null);
+			assertTrue(af.foo != null);
+		}
+		
+		public function testAnnotations():void{
+			var factory:BeanFactory = new TestBeanFactory(justannot);
+			factory.loadContext();
+			var af:AnnoFoo = (factory.getBean("afdep") as AFDependent).af;
+			assertTrue(af.foobarbaz != null);
+			assertTrue(af.bar != null);
+			assertTrue(af.foo != null);
 		}
 		
 	}

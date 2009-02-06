@@ -1,0 +1,20 @@
+<context>
+	<bean name="foo" class="org.amazuzu.ioc.paradetest.Foo">
+		<constructor>
+			<bean class="org.amazuzu.ioc.paradetest.Bar" />
+			<bean class="org.amazuzu.ioc.paradetest.Baz" />
+		</constructor>
+	</bean>
+	
+	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar" />
+	
+	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo" />
+	
+	<!-- bean name="annofoo" class="org.amazuzu.ioc.paradetest.AnnoFoo"/-->
+	
+	<bean name="afdep" class="org.amazuzu.ioc.paradetest.AFDependent">
+		<constructor>
+			<bean class="org.amazuzu.ioc.paradetest.AnnoFoo"/>
+		</constructor>
+	</bean>
+</context>
