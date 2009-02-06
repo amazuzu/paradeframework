@@ -15,7 +15,7 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		private var associative:Boolean;
 		
-		public function ParadeValueList(beanFactory:IInternalBeanFactory, listXml:XMLList, associative:Boolean)
+		public function ParadeValueList(beanFactory:IInternalBeanFactory, listXml:XMLList, associative:Boolean, annotations:Array = null)
 		{
 			this.beanFactory = beanFactory;
 			
@@ -39,6 +39,16 @@ package org.amazuzu.ioc.parade.resolvable
 				}else {
 					var resolvable:IResolvable = beanFactory.resolvablesFactory.createResolvable(property); 
 					values.push(resolvable);
+				}
+			}
+			
+			if(annotations){
+				for each(var annotEntry:Object in annotations){
+					var prop:String = annotEntry.property;
+					var reference:String = annotEntry.reference;
+					if(values[prop] == null){
+						values[prop] = new BeanReference(beanFactory, reference, false);
+					}
 				}
 			}
 			
@@ -94,6 +104,10 @@ package org.amazuzu.ioc.parade.resolvable
 				}
 				property.initializeProperties();
 			}	
+		}
+		
+		public function addReferenceIfNotOverriden(propertyName, retrieveBean):void{
+			
 		}
 	}
 }

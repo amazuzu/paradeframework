@@ -1,5 +1,6 @@
 package org.amazuzu.ioc.parade.resolvable
 {
+	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 	
 	import org.amazuzu.ioc.parade.IInternalBeanFactory;
@@ -42,10 +43,48 @@ package org.amazuzu.ioc.parade.resolvable
 				_singleton = true;
 			}
 
+			var annotations:Array /* of Objects {property:..., reference:...}*/ = [];
+
+			collectAnnotatedReferences(annotations);
+
 			constrList = new ParadeValueList(beanFactory, beanXml.constructor.children(), false);  
 		
-			propList = new ParadeValueList(beanFactory, beanXml.children(), true);
+			propList = new ParadeValueList(beanFactory, beanXml.children(), true, annotations);
 		
+		
+		}
+		
+		private function collectAnnotatedReferences(annotations:Array):void{
+			
+			var desc:XML = describeType(_class).factory[0];
+
+			var variables:XMLList = desc.variable;
+			var accessors:XMLList = desc.accessor;
+			
+			for each(var variable:XML in variables){
+				metadataProcessor(annotations, variable);
+			}
+			
+			for each(var accessor:XML in accessors){
+				metadataProcessor(annotations, accessor);
+			}
+		}
+	
+		
+		private function metadataProcessor(annotations:Array, decl:XML):void{
+			for each(var meta:XML in decl.metadata){
+				if(meta.@name.toXMLString() == "Inject"){
+					var propertyName:String = decl.@name.toXMLString();
+					var retrieveBean:String;
+						
+					if(meta.arg.toXMLString() != ""){
+						retrieveBean = meta.arg.@value.toXMLString();
+					}else{
+						retrieveBean = propertyName;
+					}
+					annotations.push({property:propertyName, reference:retrieveBean});
+				}		
+			}			
 		}
 		
 		
