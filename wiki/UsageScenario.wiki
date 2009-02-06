@@ -181,7 +181,7 @@ public class AnnoFoo
 		
     public function AnnoFoo()
     {
-        YourBeanFactory.instance.passivInit(this);
+        YourBeanFactory.instance.passiveInit(this);
     }
 
 }
