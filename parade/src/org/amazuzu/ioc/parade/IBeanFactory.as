@@ -5,5 +5,9 @@ package org.amazuzu.ioc.parade
 		function containsBean(beanName:String):Boolean;
 		
 		function getBean(beanName:String):Object;
+		
+		function loadContext():void;
+		
+		function passiveInit(object:Object):void;
 	}
 }

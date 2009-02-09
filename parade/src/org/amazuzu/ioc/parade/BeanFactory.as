@@ -21,10 +21,6 @@ package org.amazuzu.ioc.parade
 			throw new IOCError("Illegal use of IoC", null);
 		} 
 		
-		protected function getSubscribers():Array /* of ISubscriber */{
-			return null;
-		}
-		
 		public function BeanFactory()
 		{
 			metaBeans = {};
