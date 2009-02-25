@@ -37,6 +37,10 @@ package org.amazuzu.ioc.parade
 				return new ParadeValueList(beanFactory, valueXml.map.children(), true); 
 			}
 			
+		    //<xml> ... some xml <tag>..</tag> ... </xml>
+		    if(valueXml.localName() == "xml"){
+		    	return new ResolvedValue(valueXml.children()[0]);
+		    }  
 		
 			//<property name="foo" ref="foo" />
 			var valueRef:String = valueXml.@ref.toXMLString(); 

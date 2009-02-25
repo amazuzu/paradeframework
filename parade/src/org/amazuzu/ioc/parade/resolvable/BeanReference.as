@@ -17,6 +17,8 @@ package org.amazuzu.ioc.parade.resolvable
 
 		public function resolved():Boolean
 		{
+			
+			
 			var obj:Object = beanFactory.getParadeBean(_reference);
 			if(obj is ParadeBean){
 				return (obj as ParadeBean).resolved();
