@@ -58,6 +58,7 @@ package org.amazuzu.ioc.paradetest
 			assertNotNull(groolist);
 			assertTrue(groolist[0] is Baz);
 			assertTrue(groolist[1] is Bar);
+			assertTrue(groolist[2] is XML);
 			
 			assertNotNull(groo.theMap);
 	
