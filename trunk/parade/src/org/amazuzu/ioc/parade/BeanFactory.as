@@ -21,6 +21,10 @@ package org.amazuzu.ioc.parade
 			throw new IOCError("Illegal use of IoC", null);
 		} 
 		
+		protected function getSubscribers():Array /* of ISubscriber */{
+			return null;
+		}
+		
 		public function BeanFactory()
 		{
 			metaBeans = {};
@@ -65,11 +69,13 @@ package org.amazuzu.ioc.parade
 				hasUnresolved = false;
 				somethingResolved = false;
 				for each(var bean:ParadeBean in metaBeans){
+					trace("here");
 					if(!bean.resolved()){
 						notifyHasUnresolved();
 						bean.resolve(); 
 					}
 				}
+				
 			}while(hasUnresolved && somethingResolved)
 			
 			
