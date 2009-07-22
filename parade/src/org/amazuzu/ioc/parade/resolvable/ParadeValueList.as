@@ -7,7 +7,7 @@ package org.amazuzu.ioc.parade.resolvable
 	{
 		private var beanFactory:IInternalBeanFactory = null;
 	
-		private var values:Array /* of PropertyMeta */;
+		private var values:Array /* of IResolvable */;
 		
 		private var _propertiesResolved:Boolean;
 		
@@ -105,9 +105,17 @@ package org.amazuzu.ioc.parade.resolvable
 				property.initializeProperties();
 			}	
 		}
+				
+		public function performInheritance(childList:ParadeValueList):void{
+			for (var propertyName:String in values){
+				if(!childList.valuesMap.hasOwnProperty(propertyName)){
+					childList.valuesMap[propertyName] = values[propertyName];
+				}
+			}
+		}
 		
-		public function addReferenceIfNotOverriden(propertyName, retrieveBean):void{
-			
+		public function get valuesMap():Object{
+			return values;
 		}
 	}
 }

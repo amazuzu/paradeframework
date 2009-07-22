@@ -13,7 +13,7 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		private var constrList:IResolvable;
 		
-		private var propList:IResolvable;		
+		private var propList:ParadeValueList;		
 		
 		private var _beanName:String = null;
 		
@@ -24,6 +24,8 @@ package org.amazuzu.ioc.parade.resolvable
 		private var _value:Object = null;
 		
 		private var instantiated:Boolean = false;
+		
+		private var inherit:String = null;
 		
 		
 		public function ParadeBean(beanFactory:IInternalBeanFactory, beanXml:XML)
@@ -41,6 +43,11 @@ package org.amazuzu.ioc.parade.resolvable
 				_singleton = false;
 			}else{
 				_singleton = true;
+			}
+			
+			if(beanXml.attribute("inherit").toXMLString() != ""){
+				inherit = beanXml.attribute("inherit").toXMLString();
+			}else{
 			}
 
 			var annotations:Array /* of Objects {property:..., reference:...}*/ = [];
@@ -151,7 +158,17 @@ package org.amazuzu.ioc.parade.resolvable
 			
 			constrList.initializeProperties();
 		
+			
+			
+			
+			if(inherit != null){
+				var father:ParadeBean = beanFactory.getParadeBean(inherit);
+				father.propertiesList.performInheritance(propList);
+				
+			}
+			
 			propList.initializeProperties();
+			
 			var values:Object = propList.value;
 			for (var propertyName:String in values){
 				_value[propertyName] = values[propertyName];
@@ -170,6 +187,10 @@ package org.amazuzu.ioc.parade.resolvable
 			
 		}
 		
+		public function get propertiesList():ParadeValueList{
+			return propList as ParadeValueList;
+		}
+		
 		public function initializeInstance(instance:Object):void{
 			var values:Object = propList.value;
 			for (var propertyName:String in values){
@@ -177,5 +198,6 @@ package org.amazuzu.ioc.parade.resolvable
 			} 
 			
 		}
+		
 	}
 }
