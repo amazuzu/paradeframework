@@ -187,3 +187,22 @@ public class AnnoFoo
 }
 }}}
 The moment of instantiation doesn't matter (before or after your BeanFactory complete injection). Passively initialized bean will be initialized correctly.
+
+===Inheritance===
+This feature allows you to create templates of your beans. In current implementation you could specify a template bean as any regular bean. For create another bean that inherits properties of first bean just put inherit attribute to its declaration.
+{{{
+<context>
+	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
+		<property name="groo">
+			<bean class="org.amazuzu.ioc.paradetest.Groo" />
+		</property>
+		<property name="prop1" value="hello" />
+	</bean>
+	
+	<bean name="barSimilar" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="bar">
+		<property name="prop1" value="chiao" />
+	</bean>
+	
+</context>
+}}}
+Since overriding also supported prop1 for barSimilar will be "chiao", not "hello". 
