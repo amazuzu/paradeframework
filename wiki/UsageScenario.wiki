@@ -191,7 +191,7 @@ The moment of instantiation doesn't matter (before or after your BeanFactory com
 ===Templates/Inheritance===
 This feature allows you to create templates of your beans. In current implementation you could specify a template via corresponding tag or via any regular bean. For create another bean that inherits properties of first bean just put inherit attribute to its declaration.
 
-=Regular Bean as a template=
+*Regular Bean as a template*
 
 {{{
 <context>
@@ -212,7 +212,8 @@ Here bean *barSimilar* inherits groo property value of bean *bar*.
 
 Since overriding also supported prop1 for barSimilar will be "chiao", not "hello". 
 
-=Templating=
+*Templating*
+
 {{{
 
         <template name="barTemplate">
