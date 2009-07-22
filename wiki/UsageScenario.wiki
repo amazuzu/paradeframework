@@ -205,4 +205,6 @@ This feature allows you to create templates of your beans. In current implementa
 	
 </context>
 }}}
+Here bean *barSimilar* inherits groo property value of bean *bar*.
+
 Since overriding also supported prop1 for barSimilar will be "chiao", not "hello". 
