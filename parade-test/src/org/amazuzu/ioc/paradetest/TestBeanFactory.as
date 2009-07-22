@@ -13,6 +13,7 @@ package org.amazuzu.ioc.paradetest
 			Bar;
 			Baz;
 			Groo;
+			BarSimilar;
 			this.contextResource = contextResource;
 		}
 		

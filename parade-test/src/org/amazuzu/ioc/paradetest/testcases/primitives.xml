@@ -1,0 +1,11 @@
+<context>
+	<bean name="primitive" class="org.amazuzu.ioc.paradetest.PrimitiveHolder">
+		<property name="pInt" value="10" />
+		<property name="pNumber" value="20.4" />
+		<property name="pString" value="hello" />
+		<property name="pUint" value="23" />
+		<property name="pTrue" value="true" />
+		<property name="pFalse" value="false" />
+		<property name="pStringFalse" value="false" />
+	</bean>
+</context>
