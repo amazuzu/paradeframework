@@ -3,13 +3,13 @@
   <includeClasses>
     <classEntry path="org.amazuzu.ioc.parade.BeanFactory"/>
     <classEntry path="org.amazuzu.ioc.parade.IBeanFactory"/>
-    <classEntry path="org.amazuzu.ioc.parade.IInternalBeanFactory"/>
+    <classEntry path="org.amazuzu.ioc.parade.resolvable.BeanReference"/>
+    <classEntry path="org.amazuzu.ioc.parade.error.IOCInternalError"/>
+    <classEntry path="org.amazuzu.ioc.parade.resolvable.ParadeBean"/>
     <classEntry path="org.amazuzu.ioc.parade.ResolvablesFactory"/>
     <classEntry path="org.amazuzu.ioc.parade.error.IOCError"/>
-    <classEntry path="org.amazuzu.ioc.parade.error.IOCInternalError"/>
-    <classEntry path="org.amazuzu.ioc.parade.resolvable.BeanReference"/>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.IResolvable"/>
-    <classEntry path="org.amazuzu.ioc.parade.resolvable.ParadeBean"/>
+    <classEntry path="org.amazuzu.ioc.parade.IInternalBeanFactory"/>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.ParadeValueList"/>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.ResolvedValue"/>
   </includeClasses>

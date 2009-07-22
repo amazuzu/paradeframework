@@ -69,7 +69,6 @@ package org.amazuzu.ioc.parade
 				hasUnresolved = false;
 				somethingResolved = false;
 				for each(var bean:ParadeBean in metaBeans){
-					trace("here");
 					if(!bean.resolved()){
 						notifyHasUnresolved();
 						bean.resolve(); 

@@ -10,6 +10,9 @@ package org.amazuzu.ioc.parade.resolvable
 		public function ResolvedValue(_value:Object)
 		{
 			this._value = _value;
+			if(_value is String && _value=="false"){
+				this._value = false;
+			}
 		}
 
 		public function resolved():Boolean
