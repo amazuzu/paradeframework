@@ -2,6 +2,8 @@ package org.amazuzu.ioc.parade
 {
 	import flash.utils.describeType;
 	
+	import mx.rpc.mxml.Concurrency;
+	
 	import org.amazuzu.ioc.parade.error.IOCError;
 	import org.amazuzu.ioc.parade.resolvable.ParadeBean;
 	
@@ -48,13 +50,16 @@ package org.amazuzu.ioc.parade
 		}
 		
 		private function loadBeansDefinitions(xmlResorceContext:XML):void{
-			for each(var beanDeclaration:XML in xmlResorceContext.bean){
+			for each(var beanDeclaration:XML in xmlResorceContext.children()){
+				if(beanDeclaration.name() == ""){
+					continue;
+				}
 				//top level beans should have names
 				var beanName:String = beanDeclaration.@name.toXMLString();
 				if(beanName == ""){
 					throw new IOCError("Context contains unnamed bean: {0}", beanDeclaration);
 				}
-				metaBeans[beanName] = new ParadeBean(this, beanDeclaration);
+				metaBeans[beanName] = new ParadeBean(this, beanDeclaration, beanDeclaration.name() == "template");
 			}	
 		}
 		
