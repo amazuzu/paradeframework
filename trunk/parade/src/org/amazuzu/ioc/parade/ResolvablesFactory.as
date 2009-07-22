@@ -24,7 +24,12 @@ package org.amazuzu.ioc.parade
 			
 			//<bean name="foo" class="com.free.foo.bar.Baz" />
 			if(valueXml.localName() == "bean"){
-				return new ParadeBean(beanFactory, valueXml);
+				return new ParadeBean(beanFactory, valueXml, false);
+			}
+			
+			//<template name="foo" />
+			if(valueXml.localName() == "template"){
+				return new ParadeBean(beanFactory, valueXml, true);
 			}
 			
 			// <list> ... </list>
@@ -66,7 +71,7 @@ package org.amazuzu.ioc.parade
 			
 			//<property> <bean name="foo" class="com.free.foo.bar" /> </property>
 			if(valueXml.bean.toXMLString() != ""){
-				return new ParadeBean(beanFactory, valueXml.bean[0]);
+				return new ParadeBean(beanFactory, valueXml.bean[0], false);
 			}
 			
 			//<property> <class>com.lala.fafa.Foo</clas> </property>

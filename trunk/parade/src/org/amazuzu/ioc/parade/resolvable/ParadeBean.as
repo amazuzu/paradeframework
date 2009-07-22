@@ -27,19 +27,24 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		private var inherit:String = null;
 		
+		private var _template:Boolean;
 		
-		public function ParadeBean(beanFactory:IInternalBeanFactory, beanXml:XML)
+		private var _inherited:Boolean = false;
+		
+		public function ParadeBean(beanFactory:IInternalBeanFactory, beanXml:XML, _template:Boolean)
 		{
 			this.beanFactory = beanFactory;
 			
+			this._template = _template;
+			
 			_beanName = beanXml.@name.toXMLString();
 			
-			if(beanXml.attribute("class").toXMLString() != ""){
+			if(!_template && beanXml.attribute("class").toXMLString() != ""){
 				_class = getDefinitionByName(beanXml.attribute("class").toXMLString()) as Class;
 			}else{
 			}
 			
-			if(beanXml.@singleton.toXMLString() == "false"){
+			if(!_template && beanXml.@singleton.toXMLString() == "false"){
 				_singleton = false;
 			}else{
 				_singleton = true;
@@ -52,9 +57,13 @@ package org.amazuzu.ioc.parade.resolvable
 
 			var annotations:Array /* of Objects {property:..., reference:...}*/ = [];
 
-			collectAnnotatedReferences(annotations);
+			
 
-			constrList = new ParadeValueList(beanFactory, beanXml.constructor.children(), false);  
+			if(!_template){
+				collectAnnotatedReferences(annotations);
+				
+				constrList = new ParadeValueList(beanFactory, beanXml.constructor.children(), false);
+			}  
 		
 			propList = new ParadeValueList(beanFactory, beanXml.children(), true, annotations);
 		
@@ -96,10 +105,14 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		
 		public function resolved():Boolean{
-			return constrList.resolved() && (_singleton && instantiated || !_singleton);
+			return _template || constrList.resolved() && (_singleton && instantiated || !_singleton);
 		}
 		
 		public function resolve():void{
+			if(_template){
+				throw new IOCInternalError();
+			}
+			
 			if(constrList.resolved()){
 				if(_singleton && !instantiated){
 					instantiate();
@@ -112,6 +125,10 @@ package org.amazuzu.ioc.parade.resolvable
 		}
 	
 		private function instantiate():void{
+			if(_template){
+				return;
+			}
+			
 			var a:Array = constrList.value as Array;
 				
 			switch(a.length){
@@ -145,7 +162,7 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		
 		public function initializeProperties():void{
-			if(!instantiated){
+			if(!_template && !instantiated){
 			
 				if(_singleton){
 					//should be instantiated 
@@ -156,23 +173,40 @@ package org.amazuzu.ioc.parade.resolvable
 				}
 			}
 			
-			constrList.initializeProperties();
+			if(!_template){
+				constrList.initializeProperties();
+			}
 		
-			
-			
-			
+		
 			if(inherit != null){
-				var father:ParadeBean = beanFactory.getParadeBean(inherit);
-				father.propertiesList.performInheritance(propList);
+				
+				if(!_inherited){
+					var father:ParadeBean = beanFactory.getParadeBean(inherit);
+					
+					if(!father.inherited){
+						father.initializeProperties();
+					}
+					
+					
+					father.propertiesList.performInheritance(propList);
+					_inherited = true;	
+				}
+				
 				
 			}
 			
 			propList.initializeProperties();
 			
-			var values:Object = propList.value;
-			for (var propertyName:String in values){
-				_value[propertyName] = values[propertyName];
+			if(!_template){
+				var values:Object = propList.value;
+				for (var propertyName:String in values){
+					_value[propertyName] = values[propertyName];
+				}
 			} 
+		}
+		
+		public function get inherited():Boolean{
+			return _inherited;
 		}
 		
 		public function get value():Object{
