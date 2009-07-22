@@ -188,8 +188,11 @@ public class AnnoFoo
 }}}
 The moment of instantiation doesn't matter (before or after your BeanFactory complete injection). Passively initialized bean will be initialized correctly.
 
-===Inheritance===
-This feature allows you to create templates of your beans. In current implementation you could specify a template bean as any regular bean. For create another bean that inherits properties of first bean just put inherit attribute to its declaration.
+===Templates/Inheritance===
+This feature allows you to create templates of your beans. In current implementation you could specify a template via corresponding tag or via any regular bean. For create another bean that inherits properties of first bean just put inherit attribute to its declaration.
+
+=Regular Bean as a template=
+
 {{{
 <context>
 	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
@@ -208,3 +211,21 @@ This feature allows you to create templates of your beans. In current implementa
 Here bean *barSimilar* inherits groo property value of bean *bar*.
 
 Since overriding also supported prop1 for barSimilar will be "chiao", not "hello". 
+
+=Templating=
+{{{
+
+        <template name="barTemplate">
+		<property name="groo">
+			<bean class="org.amazuzu.ioc.paradetest.Groo" />
+		</property>
+		<property name="prop1" value="nothello" />
+	</template>
+	
+	<template name="barTemplate2" inherit="barTemplate">
+		<property name="prop1" value="hello" />
+	</template>
+	
+	<bean name="barSimilar2" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="barTemplate2" />
+}}}
+Here we declared base template *barTemplate* with two properties groo and prop1. The next template *barTemplate2* inherits properties from *barTemplate* and overrides prop1. *barSimilar2* use *barTemplate* to inherit its properties.
