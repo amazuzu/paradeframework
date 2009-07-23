@@ -2,20 +2,19 @@ package org.amazuzu.ioc.parade.resolvable
 {
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
+	import org.amazuzu.ioc.parade.parade_ns;
 	
-	import org.amazuzu.ioc.parade.IInternalBeanFactory;
+	import org.amazuzu.ioc.parade.BeanFactory;
 	import org.amazuzu.ioc.parade.error.IOCInternalError;
 	
 	public class ParadeBean implements IResolvable
 	{
 		
-		private var beanFactory:IInternalBeanFactory = null;
+		private var beanFactory:BeanFactory = null;
 		
 		private var constrList:IResolvable;
 		
 		private var propList:ParadeValueList;		
-		
-		private var _beanName:String = null;
 		
 		private var _class:Class = null;
 			
@@ -31,13 +30,11 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		private var _inherited:Boolean = false;
 		
-		public function ParadeBean(beanFactory:IInternalBeanFactory, beanXml:XML, _template:Boolean)
+		public function ParadeBean(beanFactory:BeanFactory, beanXml:XML, _template:Boolean)
 		{
 			this.beanFactory = beanFactory;
 			
 			this._template = _template;
-			
-			_beanName = beanXml.@name.toXMLString();
 			
 			if(!_template && beanXml.attribute("class").toXMLString() != ""){
 				_class = getDefinitionByName(beanXml.attribute("class").toXMLString()) as Class;
@@ -116,10 +113,10 @@ package org.amazuzu.ioc.parade.resolvable
 			if(constrList.resolved()){
 				if(_singleton && !instantiated){
 					instantiate();
-					beanFactory.notifyResolution();
+					beanFactory.parade_ns::notifyResolution();
 				}
 			}else{
-				beanFactory.notifyHasUnresolved();
+				beanFactory.parade_ns::notifyHasUnresolved();
 				constrList.resolve();
 			}
 		}
@@ -181,7 +178,7 @@ package org.amazuzu.ioc.parade.resolvable
 			if(inherit != null){
 				
 				if(!_inherited){
-					var father:ParadeBean = beanFactory.getParadeBean(inherit);
+					var father:ParadeBean = beanFactory.parade_ns::getParadeBean(inherit);
 					
 					if(!father.inherited){
 						father.initializeProperties();

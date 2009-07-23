@@ -11,9 +11,9 @@ package org.amazuzu.ioc.parade
 	
 	public class ResolvablesFactory
 	{
-		private var beanFactory:IInternalBeanFactory = null;
+		private var beanFactory:BeanFactory = null;
 		
-		public function ResolvablesFactory(beanFactory:IInternalBeanFactory)
+		public function ResolvablesFactory(beanFactory:BeanFactory)
 		{
 			this.beanFactory = beanFactory;
 		}
