@@ -56,7 +56,6 @@ package org.amazuzu.ioc.paradetest {
 		public function testList():void {
 			var factory:BeanFactory = new TestBeanFactory(list);
 			factory.loadContext();
-			assertTrue(factory.resolved);
 			var groo:Groo = factory.getBean("groo")as Groo;
 			var groolist:Array = groo.list;
 			assertNotNull(groolist);
@@ -74,7 +73,6 @@ package org.amazuzu.ioc.paradetest {
 			D;
 			var factory:BeanFactory = new TestBeanFactory(mixtest);
 			factory.loadContext();
-			assertTrue(factory.resolved);
 		}
 
 
@@ -142,7 +140,6 @@ package org.amazuzu.ioc.paradetest {
 			PrimitiveHolder;
 			var factory:BeanFactory = new TestBeanFactory(primitives);
 			factory.loadContext();
-
 			var holder:PrimitiveHolder = factory.getBean("primitive")as PrimitiveHolder;
 			assertTrue(holder != null);
 
