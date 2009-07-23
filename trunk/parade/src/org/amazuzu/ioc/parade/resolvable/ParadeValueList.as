@@ -1,12 +1,10 @@
 package org.amazuzu.ioc.parade.resolvable
 {
-	import org.amazuzu.ioc.parade.IInternalBeanFactory;
+	import org.amazuzu.ioc.parade.BeanFactory;
 	import org.amazuzu.ioc.parade.error.IOCError;
-	
+	import org.amazuzu.ioc.parade.parade_ns;
 	public class ParadeValueList implements IResolvable
 	{
-		private var beanFactory:IInternalBeanFactory = null;
-	
 		private var values:Array /* of IResolvable */;
 		
 		private var _propertiesResolved:Boolean;
@@ -15,10 +13,8 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		private var associative:Boolean;
 		
-		public function ParadeValueList(beanFactory:IInternalBeanFactory, listXml:XMLList, associative:Boolean, annotations:Array = null)
+		public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean, annotations:Array = null)
 		{
-			this.beanFactory = beanFactory;
-			
 			this.associative = associative;
 			
 			values = [];
@@ -31,13 +27,13 @@ package org.amazuzu.ioc.parade.resolvable
 				//property should contain name
 				var propName:String = property.@name.toXMLString();
 				if(associative){
-					var resolvable:IResolvable =  beanFactory.resolvablesFactory.createResolvable(property);
+					var resolvable:IResolvable =  beanFactory.parade_ns::resolvablesFactory.createResolvable(property);
 					if(resolvable is BeanReference && (resolvable as BeanReference).reference != null){
 						propName = (resolvable as BeanReference).reference;
 					}
 					values[propName] = resolvable; 
 				}else {
-					var resolvable:IResolvable = beanFactory.resolvablesFactory.createResolvable(property); 
+					var resolvable:IResolvable = beanFactory.parade_ns::resolvablesFactory.createResolvable(property); 
 					values.push(resolvable);
 				}
 			}

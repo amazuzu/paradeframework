@@ -2,12 +2,10 @@ package org.amazuzu.ioc.parade
 {
 	import flash.utils.describeType;
 	
-	import mx.rpc.mxml.Concurrency;
-	
 	import org.amazuzu.ioc.parade.error.IOCError;
 	import org.amazuzu.ioc.parade.resolvable.ParadeBean;
 	
-	public class BeanFactory implements IInternalBeanFactory, IBeanFactory
+	public class BeanFactory
 	{
 		private var predefinedBeans:Object /* of Beans */;
 		private var metaBeans:Object /* of BeanMeta */;
@@ -75,7 +73,7 @@ package org.amazuzu.ioc.parade
 				somethingResolved = false;
 				for each(var bean:ParadeBean in metaBeans){
 					if(!bean.resolved()){
-						notifyHasUnresolved();
+						parade_ns::notifyHasUnresolved();
 						bean.resolve(); 
 					}
 				}
@@ -102,45 +100,41 @@ package org.amazuzu.ioc.parade
 			}
 		}
 		
-		public function get resolved():Boolean{
-			return !hasUnresolved;
-		}
-		
-		public function notifyResolution():void{
+		parade_ns function notifyResolution():void{
 			somethingResolved = true;
 		}
 		
-		public function notifyHasUnresolved():void{
+		parade_ns function notifyHasUnresolved():void{
 			hasUnresolved = true;
 		}
 			
 		
-		public function containsParadeBean(beanName:String):Boolean{
+		parade_ns function containsParadeBean(beanName:String):Boolean{
 			return metaBeans[beanName] != null;
 		} 
 		
-		public function containsPredefinedBean(beanName:String):Boolean{
+		parade_ns function containsPredefinedBean(beanName:String):Boolean{
 			return predefinedBeans[beanName] != null;
 		} 
 
 		public function containsBean(beanName:String):Boolean{
-			return containsParadeBean(beanName) || containsPredefinedBean(beanName);
+			return parade_ns::containsParadeBean(beanName) || parade_ns::containsPredefinedBean(beanName);
 		}
 		
-		public function getParadeBean(beanName:String):ParadeBean{
+		parade_ns function getParadeBean(beanName:String):ParadeBean{
 			return  metaBeans[beanName] as ParadeBean;
 		}
 		
-		public function getPredefinedBean(beanName:String):Object{
+		parade_ns function getPredefinedBean(beanName:String):Object{
 			return  predefinedBeans[beanName];
 		}
 		
 		public function getBean(beanName:String):Object{
-			if(!containsParadeBean(beanName) && !containsPredefinedBean(beanName)){
+			if(!parade_ns::containsParadeBean(beanName) && !parade_ns::containsPredefinedBean(beanName)){
 				throw new IOCError("bean \"{0}\" wasn't registered in context", beanName);
 			}
 			
-			if(containsParadeBean(beanName)){
+			if(parade_ns::containsParadeBean(beanName)){
 				return (metaBeans[beanName] as ParadeBean).value;
 			}else{
 				return predefinedBeans[beanName];
@@ -148,7 +142,7 @@ package org.amazuzu.ioc.parade
 		}
 
 		
-		public function get resolvablesFactory():ResolvablesFactory{
+		parade_ns function get resolvablesFactory():ResolvablesFactory{
 			return _resolvablesFactory;
 		}
 		

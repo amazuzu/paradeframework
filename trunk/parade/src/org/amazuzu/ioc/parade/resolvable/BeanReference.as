@@ -1,14 +1,15 @@
 package org.amazuzu.ioc.parade.resolvable
 {
-	import org.amazuzu.ioc.parade.IInternalBeanFactory;
+	import org.amazuzu.ioc.parade.BeanFactory;
+	import org.amazuzu.ioc.parade.parade_ns;
 	
 	public class BeanReference implements IResolvable
 	{
-		private var beanFactory:IInternalBeanFactory = null;
+		private var beanFactory:BeanFactory = null;
 		private var _reference:String;
 		private var named:Boolean;
 		
-		public function BeanReference(beanFactory:IInternalBeanFactory, reference:String, named:Boolean)
+		public function BeanReference(beanFactory:BeanFactory, reference:String, named:Boolean)
 		{
 			this.beanFactory = beanFactory;
 			this._reference = reference;
@@ -17,7 +18,7 @@ package org.amazuzu.ioc.parade.resolvable
 
 		public function resolved():Boolean
 		{
-			var obj:Object = beanFactory.getParadeBean(_reference);
+			var obj:Object = beanFactory.parade_ns::getParadeBean(_reference);
 			if(obj is ParadeBean){
 				return (obj as ParadeBean).resolved();
 			}else{
