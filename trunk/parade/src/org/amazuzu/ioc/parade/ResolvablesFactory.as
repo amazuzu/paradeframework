@@ -69,6 +69,26 @@ package org.amazuzu.ioc.parade
 				return new ResolvedValue(getDefinitionByName(valueXml.text()));
 			}
 			
+			//<string>Foo</string>
+			if(valueXml.localName() == "string"){
+				return new ResolvedValue(valueXml.text());
+			}
+			
+			//<int>23</int>
+			if(valueXml.localName() == "int"){
+				return new ResolvedValue(parseInt(valueXml.text()));
+			}
+			
+			//<uint>0xAA</uint>
+			if(valueXml.localName() == "uint"){
+				return new ResolvedValue(parseInt(valueXml.text(), 16));
+			}
+			
+			//<number>10.4</number>
+			if(valueXml.localName() == "number"){
+				return new ResolvedValue(parseFloat(valueXml.text()));
+			}
+			
 			//<ref>foo</ref> 
 			if(valueXml.localName() == "ref"){
 				return new BeanReference(beanFactory, valueXml.text(), false);

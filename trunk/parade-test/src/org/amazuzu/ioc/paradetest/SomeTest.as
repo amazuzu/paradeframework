@@ -156,6 +156,12 @@ package org.amazuzu.ioc.paradetest {
 			assertTrue(holder.pTrue == true);
 			assertTrue(holder.pFalse == false);
 			assertTrue(holder.pStringFalse == "false");
+			
+			assertNotNull(holder.list);
+			assertEquals(holder.list[0], "foo");
+			assertEquals(holder.list[1], 100);
+			assertEquals(holder.list[2], 0xdd);
+			assertEquals(holder.list[3], 3.1415);
 
 		}
 	}
