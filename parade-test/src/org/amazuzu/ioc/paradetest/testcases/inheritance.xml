@@ -6,11 +6,11 @@
 		</property>
 		<property name="prop1" value="hello" />
 	</bean>
-	
+
 	<bean name="barSimilar" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="bar">
 		<property name="prop1" value="chiao" />
 	</bean>
-	
+
 	<!-- use template -->
 	<template name="barTemplate">
 		<property name="groo">
@@ -18,11 +18,24 @@
 		</property>
 		<property name="prop1" value="nothello" />
 	</template>
-	
+
 	<template name="barTemplate2" inherit="barTemplate">
 		<property name="prop1" value="hello" />
 	</template>
-	
+
 	<bean name="barSimilar2" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="barTemplate2">
+	</bean>
+
+	<bean name="groo" class="org.amazuzu.ioc.paradetest.Groo">
+		<property name="list">
+			<list>
+				<bean name="bar55" class="org.amazuzu.ioc.paradetest.Bar">
+					<property name="prop1" value="super55" />
+				</bean>
+				<bean name="barSimilar55" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="bar55">
+					<property name="prop1" value="supersuper55" />
+				</bean>
+			</list>
+		</property>
 	</bean>
 </context>

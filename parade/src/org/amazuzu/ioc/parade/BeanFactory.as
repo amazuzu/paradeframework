@@ -194,7 +194,11 @@ package org.amazuzu.ioc.parade
 			}			
 		}
 		
-		public function registerBean(beanName:String, instance:Object):void{
+		public function registerBean(name:String, bean:Object):void{
+			metaBeans[name] = bean;
+		}
+		
+		/*public function registerBean2(beanName:String, instance:Object):void{
 			if(instance == null){
 				throw new IOCError("Not allowed to register nullable bean {0}", beanName);
 			}
@@ -203,7 +207,7 @@ package org.amazuzu.ioc.parade
 				throw new IOCError("Not allowed to register bean {0} under empty name", instance);
 			}
 			predefinedBeans[beanName] = instance;
-		}
+		}*/
 		
 
 	}

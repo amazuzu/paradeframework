@@ -24,7 +24,9 @@ package org.amazuzu.ioc.parade
 			
 			//<bean name="foo" class="com.free.foo.bar.Baz" />
 			if(valueXml.localName() == "bean"){
-				return new ParadeBean(beanFactory, valueXml, false);
+				var bean:ParadeBean = new ParadeBean(beanFactory, valueXml, false);
+				beanFactory.registerBean(valueXml.@name.toXMLString(), bean); 
+				return bean;
 			}
 			
 			//<template name="foo" />
@@ -66,27 +68,27 @@ package org.amazuzu.ioc.parade
 				
 			//<class>com.uimteam.client.test.Foo</class>
 			if(valueXml.localName() == "class"){
-				return new ResolvedValue(getDefinitionByName(valueXml.text()));
+				return new ResolvedValue(getDefinitionByName(valueXml.text().toXMLString()));
 			}
 			
 			//<string>Foo</string>
 			if(valueXml.localName() == "string"){
-				return new ResolvedValue(valueXml.text());
+				return new ResolvedValue(valueXml.text().toXMLString());
 			}
 			
 			//<int>23</int>
 			if(valueXml.localName() == "int"){
-				return new ResolvedValue(parseInt(valueXml.text()));
+				return new ResolvedValue(parseInt(valueXml.text().toXMLString()));
 			}
 			
 			//<uint>0xAA</uint>
 			if(valueXml.localName() == "uint"){
-				return new ResolvedValue(parseInt(valueXml.text(), 16));
+				return new ResolvedValue(parseInt(valueXml.text().toXMLString(), 16));
 			}
 			
 			//<number>10.4</number>
 			if(valueXml.localName() == "number"){
-				return new ResolvedValue(parseFloat(valueXml.text()));
+				return new ResolvedValue(parseFloat(valueXml.text().toXMLString()));
 			}
 			
 			//<ref>foo</ref> 
@@ -96,7 +98,9 @@ package org.amazuzu.ioc.parade
 			
 			//<property> <bean name="foo" class="com.free.foo.bar" /> </property>
 			if(valueXml.bean.toXMLString() != ""){
-				return new ParadeBean(beanFactory, valueXml.bean[0], false);
+				var bean:ParadeBean = new ParadeBean(beanFactory, valueXml.bean[0], false);
+				beanFactory.registerBean(valueXml.bean[0].@name.toXMLString(), bean); 
+				return bean;
 			}
 			
 			//<property name="clazz" class="com.lala.fafa.Foo" />

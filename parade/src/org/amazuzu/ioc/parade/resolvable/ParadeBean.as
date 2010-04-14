@@ -180,6 +180,10 @@ package org.amazuzu.ioc.parade.resolvable
 				if(!_inherited){
 					var father:ParadeBean = beanFactory.parade_ns::getParadeBean(inherit);
 					
+					if(father == null){
+						return;
+					}
+					
 					if(!father.inherited){
 						father.initializeProperties();
 					}
