@@ -66,6 +66,12 @@ package org.amazuzu.ioc.paradetest {
 
 			assertEquals(groo.theMap["bar"], Bar);
 			assertEquals(groo.theMap["baz"], Baz);
+			
+			assertEquals(groo.clazz, Baz);
+			
+			assertEquals(groo.someXml.baz.text(), "nana");
+			
+	
 		}
 
 		public function testMix():void {

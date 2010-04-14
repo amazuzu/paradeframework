@@ -46,6 +46,11 @@ package org.amazuzu.ioc.parade
 		    if(valueXml.localName() == "xml"){
 		    	return new ResolvedValue(valueXml.children()[0]);
 		    }  
+		    
+		    //<property name="xml"><xml> ... some xml <tag>..</tag> ... </xml></property>
+		    if(valueXml.xml.toXMLString() != ""){
+		    	return new ResolvedValue(valueXml.xml.children()[0]);
+		    }
 		
 			//<property name="foo" ref="foo" />
 			var valueRef:String = valueXml.@ref.toXMLString(); 
@@ -72,6 +77,11 @@ package org.amazuzu.ioc.parade
 			//<property> <bean name="foo" class="com.free.foo.bar" /> </property>
 			if(valueXml.bean.toXMLString() != ""){
 				return new ParadeBean(beanFactory, valueXml.bean[0], false);
+			}
+			
+			//<property name="clazz" class="com.lala.fafa.Foo" />
+			if(valueXml.@["class"].toXMLString() != ""){
+				return new ResolvedValue(getDefinitionByName(valueXml.@["class"]));
 			}
 			
 			//<property> <class>com.lala.fafa.Foo</clas> </property>

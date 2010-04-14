@@ -24,6 +24,15 @@
 				</property>
 			</map>
 		</property>
+		<property name="someXml">
+			<xml>
+				<foo>
+					<bar>groo</bar>
+					<baz>nana</baz>
+				</foo>
+			</xml>
+		</property>
+		<property name="clazz" class="org.amazuzu.ioc.paradetest.Baz" />
 	</bean>
 	
 </context>
