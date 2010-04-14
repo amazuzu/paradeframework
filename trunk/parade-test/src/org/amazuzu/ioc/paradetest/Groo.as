@@ -6,6 +6,9 @@ package org.amazuzu.ioc.paradetest
 	{
 		public var singleCheck:Number;
 		
+		public var someXml:XML;
+		
+		public var clazz:Class;
 		public function Groo()
 		{
 			singleCheck = Math.random();
