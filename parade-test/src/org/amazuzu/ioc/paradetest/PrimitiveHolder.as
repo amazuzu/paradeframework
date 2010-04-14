@@ -16,6 +16,8 @@ package org.amazuzu.ioc.paradetest
 		
 		public var pStringFalse:String;
 		
+		public var list:Array;
+		
 		public function PrimitiveHolder()
 		{
 			
