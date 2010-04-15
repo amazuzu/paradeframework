@@ -1,5 +1,4 @@
 <context>
-	<!--  use bean as template -->
 	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar">
 		<property name="groo">
 			<bean class="org.amazuzu.ioc.paradetest.Groo" />
@@ -11,7 +10,6 @@
 		<property name="prop1" value="chiao" />
 	</bean>
 
-	<!-- use template -->
 	<template name="barTemplate">
 		<property name="groo">
 			<bean class="org.amazuzu.ioc.paradetest.Groo" />
@@ -41,4 +39,11 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean name="barXXX" class="org.amazuzu.ioc.paradetest.BarSimilar" singleton="false">
+		<property name="groo">
+			<bean class="org.amazuzu.ioc.paradetest.Groo" singleton="false"/>
+		</property>
+	</bean>
+
 </context>

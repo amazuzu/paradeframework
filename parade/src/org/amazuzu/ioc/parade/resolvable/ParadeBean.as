@@ -1,11 +1,12 @@
 package org.amazuzu.ioc.parade.resolvable
 {
+	import flash.system.System;
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
-	import org.amazuzu.ioc.parade.parade_ns;
 	
 	import org.amazuzu.ioc.parade.BeanFactory;
 	import org.amazuzu.ioc.parade.error.IOCInternalError;
+	import org.amazuzu.ioc.parade.parade_ns;
 	
 	public class ParadeBean implements IResolvable
 	{
@@ -148,8 +149,11 @@ package org.amazuzu.ioc.parade.resolvable
 					_value = new _class(a[0], a[1], a[2], a[3], a[4]);
 				break;
 			}
+			
+			trace("instantiated "+_value);
+			
 			if(_singleton && instantiated){
-				//could be instantiated twicely
+				//couldn't be instantiated twicely
 				throw new IOCInternalError();
 			}
 	
@@ -159,6 +163,8 @@ package org.amazuzu.ioc.parade.resolvable
 		
 		
 		public function initializeProperties():void{
+			
+			
 			if(!_template && !instantiated){
 			
 				if(_singleton){
@@ -166,7 +172,6 @@ package org.amazuzu.ioc.parade.resolvable
 					throw new IOCInternalError();
 				}else{
 					instantiate();
-					initializeProperties();
 				}
 			}
 			

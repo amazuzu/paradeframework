@@ -1,6 +1,6 @@
 package org.amazuzu.ioc.paradetest {
     import flexunit.framework.TestCase;
-
+    
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.paradetest.mixtestcase.B;
     import org.amazuzu.ioc.paradetest.mixtestcase.D;
@@ -38,7 +38,7 @@ package org.amazuzu.ioc.paradetest {
         private static var primitives:Class;
 
 
-        public function testConstructor():void {
+       public function testConstructor():void {
             var factory:BeanFactory = new TestBeanFactory(constructor);
             factory.loadContext();
             assertEquals("foo(bar()[null],baz()[null])[baz()[FREE]]", factory.getBean("foo"));
@@ -145,6 +145,14 @@ package org.amazuzu.ioc.paradetest {
             assertTrue(factory.getBean("barSimilar55") != null);
             assertTrue((factory.getBean("barSimilar55")as BarSimilar).prop1 == "supersuper55");
             assertNotNull((factory.getBean("barSimilar55")as BarSimilar).groo);
+
+
+            var bar1:BarSimilar = (factory.getBean("barXXX")as BarSimilar);
+            var bar2:BarSimilar = (factory.getBean("barXXX")as BarSimilar);
+            assertFalse(bar1==bar2);
+            assertFalse(bar1.groo == bar2.groo);
+
+
         }
 
         public function testPrimitives():void {
