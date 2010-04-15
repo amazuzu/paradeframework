@@ -144,6 +144,7 @@ package org.amazuzu.ioc.paradetest {
             assertTrue(factory.getBean("bar55") != null);
             assertTrue(factory.getBean("barSimilar55") != null);
             assertTrue((factory.getBean("barSimilar55")as BarSimilar).prop1 == "supersuper55");
+            assertNotNull((factory.getBean("barSimilar55")as BarSimilar).groo);
         }
 
         public function testPrimitives():void {

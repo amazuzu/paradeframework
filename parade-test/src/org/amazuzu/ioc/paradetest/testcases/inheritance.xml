@@ -31,6 +31,9 @@
 			<list>
 				<bean name="bar55" class="org.amazuzu.ioc.paradetest.Bar">
 					<property name="prop1" value="super55" />
+					<property name="groo">
+						<bean class="org.amazuzu.ioc.paradetest.Groo" />
+					</property>
 				</bean>
 				<bean name="barSimilar55" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="bar55">
 					<property name="prop1" value="supersuper55" />
