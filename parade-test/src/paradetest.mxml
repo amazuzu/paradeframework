@@ -3,12 +3,16 @@
 	xmlns:flexunit="flexunit.flexui.*" applicationComplete="init()">
 	<mx:Script>
 		<![CDATA[
+			import org.room13.slf4fx.Slf4FxLoggingTarget;
+			import mx.logging.Log;
 			import org.amazuzu.ioc.paradetest.ParadeTestSuite;
 			import flash.utils.describeType;
 			import mx.binding.utils.ChangeWatcher;
 			import mx.binding.utils.BindingUtils;
 			import flexunit.textui.TestRunner;
 			private function init(): void{
+				Log.addTarget(new Slf4FxLoggingTarget("tiger-whiteboard-flex", "secret"));
+				
 				testRunner.test = new ParadeTestSuite();
 				testRunner.startTest();
 				

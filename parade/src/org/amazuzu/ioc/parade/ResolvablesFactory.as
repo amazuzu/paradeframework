@@ -22,7 +22,7 @@ package org.amazuzu.ioc.parade {
             //<bean name="foo" class="com.free.foo.bar.Baz" />
             if (valueXml.localName() == "bean") {
                 var bean:ParadeBean = new ParadeBean(beanFactory, valueXml, false);
-                beanFactory.registerBean(valueXml.@name.toXMLString(), bean);
+                beanFactory.registerParadeBean(valueXml.@name.toXMLString(), bean);
                 return bean;
             }
 
@@ -94,7 +94,7 @@ package org.amazuzu.ioc.parade {
             //<property> <bean name="foo" class="com.free.foo.bar" /> </property>
             if (valueXml.bean.length() == 1) {
                 var bean:ParadeBean = new ParadeBean(beanFactory, valueXml.bean[0], false);
-                beanFactory.registerBean(valueXml.bean[0].@name.toXMLString(), bean);
+                beanFactory.registerParadeBean(valueXml.bean[0].@name.toXMLString(), bean);
                 return bean;
             }
 

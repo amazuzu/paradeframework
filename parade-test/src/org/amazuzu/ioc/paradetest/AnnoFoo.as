@@ -1,7 +1,11 @@
 package org.amazuzu.ioc.paradetest
 {
+	import mx.logging.ILogger;
+	import mx.logging.Log;
+	
 	public class AnnoFoo
 	{
+		private static var log:ILogger = Log.getLogger("AnnoFoo");
 		
 		[Inject("groo")]
 		public var foobarbaz:Groo;
@@ -24,6 +28,12 @@ package org.amazuzu.ioc.paradetest
 		public function AnnoFoo()
 		{
 		}
+		
+		[ParadeInitialize]
+		public function initialize():void{
+			log.debug("YOYO");
+		}
+
 
 	}
 }
