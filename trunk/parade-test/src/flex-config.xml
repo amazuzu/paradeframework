@@ -9,6 +9,7 @@
       </namespaces-->
       <keep-as3-metadata>
 			<name>Inject</name>
+			<name>ParadeInitialize</name>
 	  </keep-as3-metadata>		
 	  <!-- keep-generated-actionscript>true</keep-generated-actionscript-->	
 	  <!-- verbose-stacktraces>true</verbose-stacktraces>	
