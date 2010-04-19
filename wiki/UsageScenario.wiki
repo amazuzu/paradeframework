@@ -188,6 +188,47 @@ public class AnnoFoo
 }}}
 The moment of instantiation doesn't matter (before or after your BeanFactory complete injection). Passively initialized bean will be initialized correctly.
 
+* Life cycle annotations*
+
+You could specify [ParadeInitialize] annotation for some method to be called after all properties injected by BeanFactory. 
+
+{{{
+	public class AnnoFoo
+	{
+		private static var log:ILogger = Log.getLogger("AnnoFoo");
+		
+		[Inject("groo")]
+		public var foobarbaz:Groo;
+		
+		[Inject]
+		public var bar:Bar;
+		
+		private var _foo:Foo;
+		
+		[Inject]
+		public function set foo(_foo:Foo):void{
+			this._foo = _foo;
+		}
+		
+		public function get foo():Foo{
+			return _foo;
+		}
+		
+		
+		public function AnnoFoo()
+		{
+		}
+		
+		[ParadeInitialize]
+		public function initialize():void{
+			log.debug("YO-YO");
+		}
+
+
+	}
+}}}
+
+
 ===Templates/Inheritance===
 This feature allows you to create templates of your beans. In current implementation you could specify a template via corresponding tag or via any regular bean. For create another bean that inherits properties of first bean just put inherit attribute to its declaration.
 
@@ -230,3 +271,4 @@ Since overriding also supported prop1 for barSimilar will be "chiao", not "hello
 	<bean name="barSimilar2" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="barTemplate2" />
 }}}
 Here we declared base template *barTemplate* with two properties groo and prop1. The next template *barTemplate2* inherits properties from *barTemplate* and overrides prop1. *barSimilar2* use *barTemplate* to inherit its properties.
+
