@@ -1,3 +1,22 @@
+==Project Structure==
+
+{{{
+CoolFlexApp/  
+  bin-debug
+  html-template
+  libs/
+    org/
+      amazuzu/
+        ioc/
+          parade/
+            parade/
+              0.3.4/
+                parade-0.3.4.swc   
+  src
+  pom.xml
+}}}
+
+==POM Example==
 {{{
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -67,6 +86,7 @@
 			<version>1</version>
 			<type>swc</type>
 		</dependency>
+                <!-- and sure this cool IOC -->
 		<dependency>
 			<groupId>org.amazuzu.ioc.parade</groupId>
 			<artifactId>parade</artifactId>
