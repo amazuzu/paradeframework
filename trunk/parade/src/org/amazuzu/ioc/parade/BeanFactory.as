@@ -191,7 +191,7 @@ package org.amazuzu.ioc.parade {
             }
         }
 
-        public function registerParadeBean(name:String, bean:Object):void {
+        parade_ns function registerParadeBean(name:String, bean:Object):void {
             metaBeans[name] = bean;
         }
 
