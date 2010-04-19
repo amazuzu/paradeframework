@@ -17,7 +17,7 @@
 		</repository>
 
 		<repository>
-			<id>cicero-flex-libs</id>
+			<id>your-local-repository</id>
 			<url>file://${basedir}/libs</url>
 		</repository>
 	</repositories>
@@ -60,7 +60,7 @@
 			<type>pom</type>
 		</dependency>
 
-                <!-- you must use this coolest logger ->
+                <!-- you must use this coolest logger -->
 		<dependency>
 			<groupId>com.room13.slf4fx</groupId>
 			<artifactId>slf4fx</artifactId>
