@@ -154,6 +154,7 @@ package org.amazuzu.ioc.parade {
             var desc:XML = describeType(object);
             var variables:XMLList = desc.variable;
             var accessors:XMLList = desc.accessor;
+            var methods:XMLList = desc.method;
 
             for each (var variable:XML in variables) {
                 metadataProcessor(variable, object);
@@ -162,6 +163,12 @@ package org.amazuzu.ioc.parade {
             for each (var accessor:XML in accessors) {
                 metadataProcessor(accessor, object);
             }
+
+            for each (var method:XML in methods) {
+                metadataProcessor(method, object);
+            }
+
+
         }
 
         public function passiveInit(object:Object):void {
@@ -175,7 +182,8 @@ package org.amazuzu.ioc.parade {
 
         private function metadataProcessor(decl:XML, object:Object):void {
             for each (var meta:XML in decl.metadata) {
-                if (meta.@name.toXMLString() == "Inject") {
+            	var metaName:String = meta.@name.toXMLString();
+                if (metaName == "Inject") {
                     var propertyName:String = decl.@name.toXMLString();
                     var retrieveBean:String;
 
@@ -187,6 +195,8 @@ package org.amazuzu.ioc.parade {
 
                     var bean:Object = getBean(retrieveBean);
                     object[propertyName] = bean;
+                } else if (metaName == "ParadeInitialize") {
+                    object[decl.@name]();
                 }
             }
         }
