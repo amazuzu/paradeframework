@@ -1,7 +1,7 @@
 package org.amazuzu.ioc.parade.resolvable {
     import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
-    
+
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
@@ -170,12 +170,9 @@ package org.amazuzu.ioc.parade.resolvable {
         public function initializeProperties():void {
 
 
-            if (!_template && !instantiated) {
+            if (!_template) {
 
-                if (_singleton) {
-                    //should be instantiated 
-                    throw new IOCInternalError();
-                } else {
+                if (_singleton && !instantiated || !_singleton) {
                     instantiate();
                 }
             }
@@ -227,7 +224,6 @@ package org.amazuzu.ioc.parade.resolvable {
             if (_singleton) {
                 return _value;
             } else {
-                instantiate();
                 initializeProperties();
                 return _value;
             }
