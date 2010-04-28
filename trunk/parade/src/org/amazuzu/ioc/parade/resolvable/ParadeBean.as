@@ -1,7 +1,7 @@
 package org.amazuzu.ioc.parade.resolvable {
     import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
-
+    
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
@@ -30,6 +30,8 @@ package org.amazuzu.ioc.parade.resolvable {
 
         private var paradeInitialize:String = null;
 
+        private var _lazy:Boolean = false;
+
         public function ParadeBean(beanFactory:BeanFactory, beanXml:XML, _template:Boolean) {
             this.beanFactory = beanFactory;
 
@@ -44,6 +46,10 @@ package org.amazuzu.ioc.parade.resolvable {
                 _singleton = false;
             } else {
                 _singleton = true;
+            }
+
+            if (beanXml.@lazy.length() == 1 && beanXml.@lazy.toXMLString() == "true") {
+                _lazy = true;
             }
 
             if (beanXml.attribute("inherit").toXMLString() != "") {
@@ -120,8 +126,9 @@ package org.amazuzu.ioc.parade.resolvable {
             if (constrList.resolved()) {
                 if (_singleton && !instantiated) {
                     instantiate();
-                    beanFactory.parade_ns::notifyResolution();
                 }
+                beanFactory.parade_ns::notifyResolution();
+
             } else {
                 beanFactory.parade_ns::notifyHasUnresolved();
                 constrList.resolve();
@@ -240,8 +247,10 @@ package org.amazuzu.ioc.parade.resolvable {
             for (var propertyName:String in values) {
                 instance[propertyName] = values[propertyName];
             }
-
-
+        }
+        
+        public function get lazy():Boolean{
+        	return _lazy;
         }
 
     }
