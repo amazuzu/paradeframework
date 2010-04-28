@@ -92,7 +92,9 @@ package org.amazuzu.ioc.parade {
                 throw new IOCError("Bean Factory unable to resolve dependencies: {0}", msg);
             } else {
                 for each (var bean:ParadeBean in metaBeans) {
-                    bean.initializeProperties();
+                    if (!bean.lazy) {
+                        bean.initializeProperties();
+                    }
                 }
             }
         }
@@ -182,7 +184,7 @@ package org.amazuzu.ioc.parade {
 
         private function metadataProcessor(decl:XML, object:Object):void {
             for each (var meta:XML in decl.metadata) {
-            	var metaName:String = meta.@name.toXMLString();
+                var metaName:String = meta.@name.toXMLString();
                 if (metaName == "Inject") {
                     var propertyName:String = decl.@name.toXMLString();
                     var retrieveBean:String;
