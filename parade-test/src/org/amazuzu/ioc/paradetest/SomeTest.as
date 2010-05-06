@@ -1,6 +1,6 @@
 package org.amazuzu.ioc.paradetest {
     import flexunit.framework.TestCase;
-    
+
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.paradetest.mixtestcase.B;
     import org.amazuzu.ioc.paradetest.mixtestcase.D;
@@ -37,8 +37,14 @@ package org.amazuzu.ioc.paradetest {
         [Embed(source="testcases/primitives.xml", mimeType = "application/octet-stream")]
         private static var primitives:Class;
 
+        [Embed(source="modular/module1.xml", mimeType = "application/octet-stream")]
+        private static var module1:Class;
 
-       public function testConstructor():void {
+        [Embed(source="modular/module2.xml", mimeType = "application/octet-stream")]
+        private static var module2:Class;
+
+
+        public function testConstructor():void {
             var factory:BeanFactory = new TestBeanFactory(constructor);
             factory.loadContext();
             assertEquals("foo(bar()[null],baz()[null])[baz()[FREE]]", factory.getBean("foo"));
@@ -149,7 +155,7 @@ package org.amazuzu.ioc.paradetest {
 
             var bar1:BarSimilar = (factory.getBean("barXXX")as BarSimilar);
             var bar2:BarSimilar = (factory.getBean("barXXX")as BarSimilar);
-            assertFalse(bar1==bar2);
+            assertFalse(bar1 == bar2);
             assertFalse(bar1.groo == bar2.groo);
 
 
@@ -176,6 +182,14 @@ package org.amazuzu.ioc.paradetest {
             assertEquals(holder.list[2], 0xdd);
             assertEquals(holder.list[3], 3.1415);
 
+        }
+
+        public function testModularContext():void {
+            var factory:BeanFactory = new TestBeanFactory(module1);
+            factory.loadContext();
+            assertFalse(factory.containsBean("foo"));
+            factory.loadBeanContext([XML(new module2())]);
+            assertTrue(factory.containsBean("foo"));
         }
     }
 }

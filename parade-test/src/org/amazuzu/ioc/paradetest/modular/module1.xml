@@ -1,0 +1,4 @@
+<context>
+	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar" />
+	<bean name="baz" class="org.amazuzu.ioc.paradetest.Baz" />
+</context>

@@ -11,8 +11,11 @@ package org.amazuzu.ioc.parade.resolvable {
         private var _value:Object = null;
 
         private var associative:Boolean;
+        
+        private var beanFactory:BeanFactory;
 
-        public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean, annotations:Array = null) {
+        public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean) {
+        	this.beanFactory = beanFactory;
             this.associative = associative;
 
             values = [];
@@ -36,17 +39,16 @@ package org.amazuzu.ioc.parade.resolvable {
                 }
             }
 
-            if (annotations) {
-                for each (var annotEntry:Object in annotations) {
-                    var prop:String = annotEntry.property;
-                    var reference:String = annotEntry.reference;
-                    if (values[prop] == null) {
-                        values[prop] = new BeanReference(beanFactory, reference, false);
-                    }
+        }
+
+        public function set annotations(_annotations:Array):void {
+            for each (var annotEntry:Object in _annotations) {
+                var prop:String = annotEntry.property;
+                var reference:String = annotEntry.reference;
+                if (values[prop] == null) {
+                    values[prop] = new BeanReference(beanFactory, reference, false);
                 }
             }
-
-
         }
 
         public function resolve():void {
