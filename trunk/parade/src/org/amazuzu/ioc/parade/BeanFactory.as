@@ -1,6 +1,7 @@
 package org.amazuzu.ioc.parade {
+    import flash.system.ApplicationDomain;
     import flash.utils.describeType;
-
+    
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.resolvable.ParadeBean;
 
@@ -44,7 +45,14 @@ package org.amazuzu.ioc.parade {
             passiveInitialize();
         }
 
-        private function loadBeansDefinitions(xmlResorceContext:XML):void {
+        public function loadBeanContext(contextResources:Array /* of XML*/ , applicationDomain:ApplicationDomain = null):void {
+            for each (var contextResource:XML in contextResources) {
+                loadBeansDefinitions(contextResource, applicationDomain);
+            }
+            resolveBeans();
+        }
+
+        private function loadBeansDefinitions(xmlResorceContext:XML, applicationDomain:ApplicationDomain = null):void {
             for each (var beanDeclaration:XML in xmlResorceContext.children()) {
                 if (beanDeclaration.name() == "") {
                     continue;
@@ -54,7 +62,7 @@ package org.amazuzu.ioc.parade {
                 if (beanName == "") {
                     throw new IOCError("Context contains unnamed bean: {0}", beanDeclaration);
                 }
-                metaBeans[beanName] = new ParadeBean(this, beanDeclaration, beanDeclaration.name() == "template");
+                metaBeans[beanName] = new ParadeBean(this, beanDeclaration, beanDeclaration.name() == "template", applicationDomain);
             }
         }
 

@@ -1,7 +1,8 @@
 package org.amazuzu.ioc.parade.resolvable {
+    import flash.system.ApplicationDomain;
     import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
-    
+
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
@@ -14,7 +15,7 @@ package org.amazuzu.ioc.parade.resolvable {
 
         private var propList:ParadeValueList;
 
-        private var _class:Class = null;
+        private var _classStr:String = null;
 
         private var _singleton:Boolean;
 
@@ -32,13 +33,17 @@ package org.amazuzu.ioc.parade.resolvable {
 
         private var _lazy:Boolean = false;
 
-        public function ParadeBean(beanFactory:BeanFactory, beanXml:XML, _template:Boolean) {
+        private var applicationDomain:ApplicationDomain;
+
+        public function ParadeBean(beanFactory:BeanFactory, beanXml:XML, _template:Boolean, applicationDomain:ApplicationDomain = null) {
             this.beanFactory = beanFactory;
+            this.applicationDomain = applicationDomain;
 
             this._template = _template;
 
             if (!_template && beanXml.attribute("class").toXMLString() != "") {
-                _class = getDefinitionByName(beanXml.attribute("class").toXMLString())as Class;
+                _classStr = beanXml.attribute("class").toXMLString();
+
             } else {
             }
 
@@ -57,22 +62,23 @@ package org.amazuzu.ioc.parade.resolvable {
             } else {
             }
 
-            var annotations:Array /* of Objects {property:..., reference:...}*/  = [];
+
 
 
 
             if (!_template) {
-                collectAnnotatedReferences(annotations);
-
                 constrList = new ParadeValueList(beanFactory, beanXml.constructor.children(), false);
             }
 
-            propList = new ParadeValueList(beanFactory, beanXml.children(), true, annotations);
+            propList = new ParadeValueList(beanFactory, beanXml.children(), true);
 
 
         }
 
-        private function collectAnnotatedReferences(annotations:Array):void {
+//* for prop list */
+        private function collectAnnotatedReferences(_class:Class):void {
+            var annotations:Array /* of Objects {property:..., reference:...}*/  = [];
+
 
             var desc:XML = describeType(_class).factory[0];
 
@@ -91,6 +97,8 @@ package org.amazuzu.ioc.parade.resolvable {
             for each (var method:XML in methods) {
                 metadataProcessor(annotations, method);
             }
+
+            propList.annotations = annotations;
         }
 
 
@@ -142,6 +150,14 @@ package org.amazuzu.ioc.parade.resolvable {
 
             var a:Array = constrList.value as Array;
 
+            var _class:Class = null;
+            if (applicationDomain) {
+                _class = applicationDomain.getDefinition(_classStr)as Class;
+            } else {
+                _class = getDefinitionByName(_classStr)as Class;
+            }
+            collectAnnotatedReferences(_class);
+
             switch (a.length) {
                 case 0:
                     _value = new _class();
@@ -162,6 +178,9 @@ package org.amazuzu.ioc.parade.resolvable {
                     _value = new _class(a[0], a[1], a[2], a[3], a[4]);
                     break;
             }
+
+
+
 
 
             if (_singleton && instantiated) {
@@ -248,9 +267,9 @@ package org.amazuzu.ioc.parade.resolvable {
                 instance[propertyName] = values[propertyName];
             }
         }
-        
-        public function get lazy():Boolean{
-        	return _lazy;
+
+        public function get lazy():Boolean {
+            return _lazy;
         }
 
     }
