@@ -7,6 +7,7 @@ package org.amazuzu.ioc.paradetest
 		public function Bar()
 		{
 		}
+		
 		public var groo:Groo;
 		
 		public var prop1:String;

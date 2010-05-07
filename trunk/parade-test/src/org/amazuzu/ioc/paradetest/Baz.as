@@ -1,8 +1,7 @@
 package org.amazuzu.ioc.paradetest
 {
 	import mx.utils.StringUtil;
-	
-	[Bindable]
+
 	public class Baz
 	{
 		
