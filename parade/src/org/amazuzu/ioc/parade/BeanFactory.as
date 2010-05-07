@@ -100,8 +100,9 @@ package org.amazuzu.ioc.parade {
                 throw new IOCError("Bean Factory unable to resolve dependencies: {0}", msg);
             } else {
                 for each (var bean:ParadeBean in metaBeans) {
-                    if (!bean.lazy) {
+                    if (!bean.lazy && !bean.initialized) {
                         bean.initializeProperties();
+                        bean.initialized = true;
                     }
                 }
             }

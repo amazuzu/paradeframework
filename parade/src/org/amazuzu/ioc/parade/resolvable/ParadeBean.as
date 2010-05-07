@@ -34,6 +34,8 @@ package org.amazuzu.ioc.parade.resolvable {
         private var _lazy:Boolean = false;
 
         private var applicationDomain:ApplicationDomain;
+        
+        public var initialized:Boolean = false;
 
         public function ParadeBean(beanFactory:BeanFactory, beanXml:XML, _template:Boolean, applicationDomain:ApplicationDomain = null) {
             this.beanFactory = beanFactory;
