@@ -1,4 +1,6 @@
 <context>
+	<bean name="bardep" class="org.amazuzu.ioc.paradetest.BarDep" singleton="false" lazy="true"/>
+
 	<bean name="foo" class="org.amazuzu.ioc.paradetest.Foo">
 		<constructor>
 			<ref>bar</ref>
@@ -10,4 +12,6 @@
 			</bean>
 		</property>
 	</bean>
+	
+	
 </context>
