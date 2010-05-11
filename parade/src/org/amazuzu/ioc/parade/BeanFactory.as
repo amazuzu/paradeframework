@@ -1,7 +1,7 @@
 package org.amazuzu.ioc.parade {
     import flash.system.ApplicationDomain;
     import flash.utils.describeType;
-    
+
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.resolvable.ParadeBean;
 
@@ -46,10 +46,13 @@ package org.amazuzu.ioc.parade {
         }
 
         public function loadBeanContext(contextResources:Array /* of XML*/ , applicationDomain:ApplicationDomain = null):void {
+
+
             for each (var contextResource:XML in contextResources) {
                 loadBeansDefinitions(contextResource, applicationDomain);
             }
             resolveBeans();
+
         }
 
         private function loadBeansDefinitions(xmlResorceContext:XML, applicationDomain:ApplicationDomain = null):void {

@@ -2,5 +2,5 @@
 	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar" />
 	<bean name="baz" class="org.amazuzu.ioc.paradetest.Baz" />
 	
-	<bean name="bardep" class="org.amazuzu.ioc.paradetest.BarDep" />
+	
 </context>
