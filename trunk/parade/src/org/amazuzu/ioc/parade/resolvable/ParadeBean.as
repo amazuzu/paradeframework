@@ -69,10 +69,10 @@ package org.amazuzu.ioc.parade.resolvable {
 
 
             if (!_template) {
-                constrList = new ParadeValueList(beanFactory, beanXml.constructor.children(), false);
+                constrList = new ParadeValueList(beanFactory, beanXml.constructor.children(), false, applicationDomain);
             }
 
-            propList = new ParadeValueList(beanFactory, beanXml.children(), true);
+            propList = new ParadeValueList(beanFactory, beanXml.children(), true, applicationDomain);
 
 
         }

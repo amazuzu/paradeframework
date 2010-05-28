@@ -1,4 +1,6 @@
 package org.amazuzu.ioc.parade.resolvable {
+    import flash.system.ApplicationDomain;
+    
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.parade_ns;
@@ -13,10 +15,13 @@ package org.amazuzu.ioc.parade.resolvable {
         private var associative:Boolean;
         
         private var beanFactory:BeanFactory;
+		
+		private var applicationDomain:ApplicationDomain;
 
-        public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean) {
+        public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean, applicationDomain:ApplicationDomain = null) {
         	this.beanFactory = beanFactory;
             this.associative = associative;
+			applicationDomain = applicationDomain;
 
             values = [];
 
@@ -28,13 +33,13 @@ package org.amazuzu.ioc.parade.resolvable {
                 //property should contain name
                 var propName:String = property.@name.toXMLString();
                 if (associative) {
-                    var resolvable:IResolvable = beanFactory.parade_ns::resolvablesFactory.createResolvable(property);
+                    var resolvable:IResolvable = beanFactory.parade_ns::resolvablesFactory.createResolvable(property, applicationDomain);
                     if (resolvable is BeanReference && (resolvable as BeanReference).reference != null) {
                         propName = (resolvable as BeanReference).reference;
                     }
                     values[propName] = resolvable;
                 } else {
-                    var resolvable:IResolvable = beanFactory.parade_ns::resolvablesFactory.createResolvable(property);
+                    var resolvable:IResolvable = beanFactory.parade_ns::resolvablesFactory.createResolvable(property, applicationDomain);
                     values.push(resolvable);
                 }
             }
