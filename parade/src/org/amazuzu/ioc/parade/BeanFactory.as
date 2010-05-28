@@ -1,7 +1,7 @@
 package org.amazuzu.ioc.parade {
     import flash.system.ApplicationDomain;
     import flash.utils.describeType;
-
+    
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.resolvable.ParadeBean;
 
@@ -102,7 +102,8 @@ package org.amazuzu.ioc.parade {
                 }
                 throw new IOCError("Bean Factory unable to resolve dependencies: {0}", msg);
             } else {
-                for each (var bean:ParadeBean in metaBeans) {
+                for (var beanName:String in metaBeans) {
+					var bean:ParadeBean = metaBeans[beanName] as ParadeBean;
                     if (!bean.lazy && !bean.initialized) {
                         bean.initializeProperties();
                         bean.initialized = true;
@@ -158,9 +159,13 @@ package org.amazuzu.ioc.parade {
         }
 
         private function passiveInitialize():void {
-            for each (var passive:*in _passives) {
+            for each (var passive:* in _passives) {
                 initializeObject(passive);
             }
+			
+			for each (var passive:* in predefinedBeans) {
+				initializeObject(passive);
+			}
         }
 
         private function initializeObject(object:Object):void {

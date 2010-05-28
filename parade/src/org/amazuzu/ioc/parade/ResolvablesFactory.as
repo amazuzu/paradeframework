@@ -1,4 +1,5 @@
 package org.amazuzu.ioc.parade {
+    import flash.system.ApplicationDomain;
     import flash.utils.getDefinitionByName;
 
     import org.amazuzu.ioc.parade.error.IOCError;
@@ -15,7 +16,7 @@ package org.amazuzu.ioc.parade {
             this.beanFactory = beanFactory;
         }
 
-        public function createResolvable(valueXml:XML):IResolvable {
+        public function createResolvable(valueXml:XML, applicationDomain:ApplicationDomain):IResolvable {
 
 
 
@@ -63,7 +64,7 @@ package org.amazuzu.ioc.parade {
 
             //<class>com.uimteam.client.test.Foo</class>
             if (valueXml.localName() == "class") {
-                return new ResolvedValue(getDefinitionByName(valueXml.text().toXMLString()));
+                return new ResolvedValue(getClass(valueXml.text().toXMLString(), applicationDomain));
             }
 
             //<string>Foo</string>
@@ -100,16 +101,24 @@ package org.amazuzu.ioc.parade {
 
             //<property name="clazz" class="com.lala.fafa.Foo" />
             if (valueXml.@["class"].length() == 1) {
-                return new ResolvedValue(getDefinitionByName(valueXml.@["class"]));
+                return new ResolvedValue(getClass(valueXml.@["class"], applicationDomain));
             }
 
             //<property> <class>com.lala.fafa.Foo</clas> </property>
             if (valueXml.children()[0].localName() == "class") {
-                trace("class found " + valueXml.children()[0].text());
-                return new ResolvedValue(getDefinitionByName(valueXml.children()[0].text()));
+                //trace("class found " + valueXml.children()[0].text());
+                return new ResolvedValue(getClass(valueXml.children()[0].text(), applicationDomain));
             }
 
             throw new IOCError("Error in XML DTD: {0}", valueXml.toXMLString());
+        }
+
+        private function getClass(classStr:String, applicationDomain:ApplicationDomain):Class {
+            if (applicationDomain) {
+                return applicationDomain.getDefinition(classStr) as Class;
+            } else {
+                return getDefinitionByName(classStr) as Class;
+            }
         }
 
     }
