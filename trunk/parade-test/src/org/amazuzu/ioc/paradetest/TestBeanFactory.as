@@ -15,6 +15,7 @@ package org.amazuzu.ioc.paradetest
 			Groo;
 			BarSimilar;
 			BarDep;
+			AFParent;
 			this.contextResource = contextResource;
 		}
 		
