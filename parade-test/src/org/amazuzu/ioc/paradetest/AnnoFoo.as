@@ -15,6 +15,8 @@ package org.amazuzu.ioc.paradetest
 		
 		private var _foo:Foo;
 		
+		public var initialized:Boolean = false;
+		
 		[Inject]
 		public function set foo(_foo:Foo):void{
 			this._foo = _foo;
@@ -32,6 +34,7 @@ package org.amazuzu.ioc.paradetest
 		[ParadeInitialize]
 		public function initialize():void{
 			log.debug("YOYO");
+			initialized = true;
 		}
 
 

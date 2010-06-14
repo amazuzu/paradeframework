@@ -15,4 +15,7 @@
 			<bean class="org.amazuzu.ioc.paradetest.AnnoFoo"/>
 		</constructor>
 	</bean>
+	
+	<bean name="afparent" class="org.amazuzu.ioc.paradetest.AFParent">
+	</bean>
 </context>

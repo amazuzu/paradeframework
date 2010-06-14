@@ -1,6 +1,6 @@
 package org.amazuzu.ioc.paradetest {
     import flexunit.framework.TestCase;
-
+    
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.paradetest.mixtestcase.B;
     import org.amazuzu.ioc.paradetest.mixtestcase.D;
@@ -196,5 +196,12 @@ package org.amazuzu.ioc.paradetest {
             assertNotNull((factory.getBean("bardep")as BarDep).bar);
 
         }
+		
+		public function testParadeInitialize():void {
+			var factory:BeanFactory = new TestBeanFactory(justannot);
+			factory.loadContext();
+			assertTrue((factory.getBean("afparent") as AFParent).initialized);
+			
+		}
     }
 }
