@@ -9,6 +9,10 @@
 	<bean name="barSimilar" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="bar">
 		<property name="prop1" value="chiao" />
 	</bean>
+	
+	<bean name="barSimilar2" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="barSimilar">
+		<property name="prop1" value="chiao2" />
+	</bean>
 
 	<template name="barTemplate">
 		<property name="groo">
