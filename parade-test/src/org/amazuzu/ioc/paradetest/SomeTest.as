@@ -1,6 +1,8 @@
 package org.amazuzu.ioc.paradetest {
+    import flash.utils.describeType;
+    
     import flexunit.framework.TestCase;
-
+    
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.paradetest.mixtestcase.B;
     import org.amazuzu.ioc.paradetest.mixtestcase.D;
@@ -160,7 +162,10 @@ package org.amazuzu.ioc.paradetest {
             assertFalse(bar1.groo == bar2.groo);
 
 
-            assertTrue((factory.getBean("barSimilar2") as BarSimilar).setsCounter == 1);
+            assertTrue((factory.getBean("barSimilar3") as BarSimilar).setsCounter == 1);
+			
+			assertNotNull((factory.getBean("mhBarChild") as Bar).groo);
+			assertNotNull((factory.getBean("mhBarChild") as Bar).prop1);
 
 
         }
@@ -204,7 +209,9 @@ package org.amazuzu.ioc.paradetest {
         public function testParadeInitialize():void {
             var factory:BeanFactory = new TestBeanFactory(justannot);
             factory.loadContext();
-            assertTrue((factory.getBean("afparent") as AFParent).initialized);
+            //assertTrue((factory.getBean("afparent") as AFParent).initialized);
+			var xml:XML = describeType(new AFParent());
+			trace(xml.toXMLString());
 
         }
     }

@@ -10,7 +10,7 @@
 		<property name="prop1" value="chiao" />
 	</bean>
 	
-	<bean name="barSimilar2" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="barSimilar">
+	<bean name="barSimilar3" class="org.amazuzu.ioc.paradetest.BarSimilar" inherit="barSimilar">
 		<property name="prop1" value="chiao2" />
 	</bean>
 
@@ -49,5 +49,19 @@
 			<bean class="org.amazuzu.ioc.paradetest.Groo" singleton="false"/>
 		</property>
 	</bean>
+	
+	<!-- multiple inheritance -->
+	<bean name="mhBarProp" class="org.amazuzu.ioc.paradetest.Bar">
+		<property name="prop1" value="prop1" />
+	</bean>
+	
+	<bean name="mhBarGroo" class="org.amazuzu.ioc.paradetest.Bar">
+		<property name="groo">
+			<bean class="org.amazuzu.ioc.paradetest.Groo"/>
+		</property>
+	</bean>
+	
+	<bean name="mhBarChild" class="org.amazuzu.ioc.paradetest.Bar" inherit="mhBarProp, mhBarGroo" />
+
 
 </context>

@@ -2,7 +2,9 @@ package org.amazuzu.ioc.parade.resolvable {
     import flash.system.ApplicationDomain;
     import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
-
+    
+    import mx.utils.StringUtil;
+    
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
@@ -34,7 +36,7 @@ package org.amazuzu.ioc.parade.resolvable {
         private var _lazy:Boolean = false;
 
         private var applicationDomain:ApplicationDomain;
-        
+
         public var initialized:Boolean = false;
 
         public function ParadeBean(beanFactory:BeanFactory, beanXml:XML, _template:Boolean, applicationDomain:ApplicationDomain = null) {
@@ -79,7 +81,7 @@ package org.amazuzu.ioc.parade.resolvable {
 
 //* for prop list */
         private function collectAnnotatedReferences(_class:Class):void {
-            var annotations:Array /* of Objects {property:..., reference:...}*/  = [];
+            var annotations:Array /* of Objects {property:..., reference:...}*/ = [];
 
 
             var desc:XML = describeType(_class).factory[0];
@@ -116,7 +118,7 @@ package org.amazuzu.ioc.parade.resolvable {
                     } else {
                         retrieveBean = propertyName;
                     }
-                    annotations.push({property:propertyName, reference:retrieveBean});
+                    annotations.push({ property: propertyName, reference: retrieveBean });
                 } else if (metaName == "ParadeInitialize") {
                     paradeInitialize = decl.@name;
                 }
@@ -125,7 +127,7 @@ package org.amazuzu.ioc.parade.resolvable {
 
 
         public function resolved():Boolean {
-            return _template || constrList.resolved() && (_singleton && instantiated || !_singleton);
+            return _template || constrList.resolved() && (_singleton && instantiated  || !_singleton);
         }
 
         public function resolve():void {
@@ -147,16 +149,16 @@ package org.amazuzu.ioc.parade.resolvable {
 
         private function instantiate():void {
             if (_template) {
-                return ;
+                return;
             }
 
             var a:Array = constrList.value as Array;
 
             var _class:Class = null;
             if (applicationDomain) {
-                _class = applicationDomain.getDefinition(_classStr)as Class;
+                _class = applicationDomain.getDefinition(_classStr) as Class;
             } else {
-                _class = getDefinitionByName(_classStr)as Class;
+                _class = getDefinitionByName(_classStr) as Class;
             }
             collectAnnotatedReferences(_class);
 
@@ -213,18 +215,33 @@ package org.amazuzu.ioc.parade.resolvable {
             if (inherit != null) {
 
                 if (!_inherited) {
-                    var father:ParadeBean = beanFactory.parade_ns::getParadeBean(inherit);
+                    var inherits:Array = null;
 
-                    if (father == null) {
-                        return ;
+                    if (inherit.indexOf(",") != -1) {
+                        inherits = inherit.split(",");
+						
+                    } else {
+                        inherits = [ inherit ]
                     }
 
-                    if (!father.inherited) {
-                        father.initializeProperties();
+
+                    for each (var template:String in inherits) {
+                        var father:ParadeBean = beanFactory.parade_ns::getParadeBean(StringUtil.trim(template));
+
+                        if (father == null) {
+                            //beanFactory.parade_ns::notifyHasUnresolved();
+                            return;
+                        }
                     }
 
-
-                    father.propertiesList.performInheritance(propList);
+                    for each (var template:String in inherits) {
+                        var father:ParadeBean = beanFactory.parade_ns::getParadeBean(StringUtil.trim(template));
+                        if (!father.inherited) {
+                            father.initializeProperties();
+                        }
+                        father.propertiesList.performInheritance(propList);
+                    }
+					//beanFactory.parade_ns::notifyResolution();
                     _inherited = true;
                 }
 
@@ -238,8 +255,10 @@ package org.amazuzu.ioc.parade.resolvable {
                 for (var propertyName:String in values) {
                     _value[propertyName] = values[propertyName];
                 }
+
                 if (paradeInitialize) {
                     _value[paradeInitialize]();
+
                 }
             }
         }
