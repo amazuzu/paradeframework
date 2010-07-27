@@ -34,12 +34,18 @@ package org.amazuzu.ioc.parade {
 
             // <list> ... </list>
             if (valueXml.list.length() == 1) {
-                return new ParadeValueList(beanFactory, valueXml.list.children(), false);
+                return new ParadeValueList(beanFactory, valueXml.list.children(), false, applicationDomain);
+            }
+
+            // <vector type="Number"> ... </vector>
+            if (valueXml.vector.length() == 1) {
+                var vectorType:String = valueXml.vector[0].@type;
+                return new ParadeValueList(beanFactory, valueXml.vector.children(), false, applicationDomain, vectorType);
             }
 
             //<map> ... </map>
             if (valueXml.map.length() == 1) {
-                return new ParadeValueList(beanFactory, valueXml.map.children(), true);
+                return new ParadeValueList(beanFactory, valueXml.map.children(), true, applicationDomain);
             }
 
             //<xml> ... some xml <tag>..</tag> ... </xml>

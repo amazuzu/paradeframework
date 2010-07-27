@@ -1,8 +1,8 @@
 package org.amazuzu.ioc.paradetest {
     import flash.utils.describeType;
-    
+
     import flexunit.framework.TestCase;
-    
+
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.paradetest.mixtestcase.B;
     import org.amazuzu.ioc.paradetest.mixtestcase.D;
@@ -163,9 +163,9 @@ package org.amazuzu.ioc.paradetest {
 
 
             assertTrue((factory.getBean("barSimilar3") as BarSimilar).setsCounter == 1);
-			
-			assertNotNull((factory.getBean("mhBarChild") as Bar).groo);
-			assertNotNull((factory.getBean("mhBarChild") as Bar).prop1);
+
+            assertNotNull((factory.getBean("mhBarChild") as Bar).groo);
+            assertNotNull((factory.getBean("mhBarChild") as Bar).prop1);
 
 
         }
@@ -191,6 +191,14 @@ package org.amazuzu.ioc.paradetest {
             assertEquals(holder.list[2], 0xdd);
             assertEquals(holder.list[3], 3.1415);
 
+            assertNotNull(holder.numVector);
+            assertEquals(holder.numVector[0], 100.2);
+            assertEquals(holder.numVector[1], 100.3);
+            assertEquals(holder.numVector[2], 100.4);
+
+
+
+
         }
 
         public function testModularContext():void {
@@ -210,8 +218,8 @@ package org.amazuzu.ioc.paradetest {
             var factory:BeanFactory = new TestBeanFactory(justannot);
             factory.loadContext();
             //assertTrue((factory.getBean("afparent") as AFParent).initialized);
-			var xml:XML = describeType(new AFParent());
-			trace(xml.toXMLString());
+            var xml:XML = describeType(new AFParent());
+            trace(xml.toXMLString());
 
         }
     }

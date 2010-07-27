@@ -1,27 +1,31 @@
 package org.amazuzu.ioc.parade.resolvable {
     import flash.system.ApplicationDomain;
+    import flash.utils.getDefinitionByName;
     
     import org.amazuzu.ioc.parade.BeanFactory;
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.parade_ns;
 
     public class ParadeValueList implements IResolvable {
-        private var values:Array /* of IResolvable */ ;
+        private var values:Array /* of IResolvable */;
 
         private var _propertiesResolved:Boolean;
 
         private var _value:Object = null;
 
         private var associative:Boolean;
-        
-        private var beanFactory:BeanFactory;
-		
-		private var applicationDomain:ApplicationDomain;
 
-        public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean, applicationDomain:ApplicationDomain = null) {
-        	this.beanFactory = beanFactory;
+        private var beanFactory:BeanFactory;
+
+        private var applicationDomain:ApplicationDomain;
+
+        private var vectorType:String;
+
+        public function ParadeValueList(beanFactory:BeanFactory, listXml:XMLList, associative:Boolean, applicationDomain:ApplicationDomain, vectorType:String = null) {
+            this.beanFactory = beanFactory;
             this.associative = associative;
-			applicationDomain = applicationDomain;
+            this.applicationDomain = applicationDomain;
+			this.vectorType = vectorType; 
 
             values = [];
 
@@ -77,15 +81,26 @@ package org.amazuzu.ioc.parade.resolvable {
             if (associative) {
                 var argso:Object = {};
                 for (var argName:String in values) {
-                    argso[argName] = (values[argName]as IResolvable).value;
+                    argso[argName] = (values[argName] as IResolvable).value;
                 }
                 _value = argso;
             } else {
-                var argsa:Array = [];
-                for each (var resolvedArg:IResolvable in values) {
-                    argsa.push(resolvedArg.value);
+                if (vectorType) {
+					var vectClass:Class = getDefinitionByName("__AS3__.vec::Vector.<"+vectorType+">") as Class;
+                    var argsv:Object = new vectClass();
+                    for each (var resolvedArg:IResolvable in values) {
+                        argsv.push(resolvedArg.value);
+                    }
+                    _value = argsv;
+					
+                } else {
+                    var argsa:Array = [];
+                    for each (var resolvedArg:IResolvable in values) {
+                        argsa.push(resolvedArg.value);
+                    }
+                    _value = argsa;
                 }
-                _value = argsa;
+
             }
 
             return _value;

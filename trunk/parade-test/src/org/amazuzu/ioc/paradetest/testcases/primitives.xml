@@ -15,5 +15,12 @@
 				<number>3.1415</number>
 			</list>
 		</property>
+		<property name="numVector">
+			<vector type="Number">
+				<number>100.2</number>
+				<number>100.3</number>
+				<number>100.4</number>
+			</vector>
+		</property>
 	</bean>
 </context>

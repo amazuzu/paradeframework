@@ -18,6 +18,8 @@ package org.amazuzu.ioc.paradetest
 		
 		public var list:Array;
 		
+		public var numVector:Vector.<Number>;
+		
 		public function PrimitiveHolder()
 		{
 			
