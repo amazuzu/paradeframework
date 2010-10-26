@@ -16,6 +16,9 @@ package org.amazuzu.ioc.paradetest
 			BarSimilar;
 			BarDep;
 			AFParent;
+			ConstructList;
+			ConstructMap;
+			ConstructVector;
 			this.contextResource = contextResource;
 		}
 		

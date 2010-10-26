@@ -18,7 +18,25 @@ package org.amazuzu.ioc.parade {
 
         public function createResolvable(valueXml:XML, applicationDomain:ApplicationDomain):IResolvable {
 
+            if (valueXml.localName() == "property") {
 
+                //<property name="foo" ref="foo" /> 
+                if (valueXml.@ref.length() == 1) {
+                    return new BeanReference(beanFactory, valueXml.@ref.toXMLString(), true);
+                }
+
+                //<property name="foo" value="foo"/> 
+                if (valueXml.@value.length() == 1) {
+                    return new ResolvedValue(valueXml.@value.toXMLString());
+                }
+
+                //<property name="clazz" class="com.lala.fafa.Foo" />
+                if (valueXml.@["class"].length() == 1) {
+                    return new ResolvedValue(getClass(valueXml.@["class"], applicationDomain));
+                }
+
+                valueXml = valueXml.children()[0];
+            }
 
             //<bean name="foo" class="com.free.foo.bar.Baz" />
             if (valueXml.localName() == "bean") {
@@ -32,40 +50,24 @@ package org.amazuzu.ioc.parade {
                 return new ParadeBean(beanFactory, valueXml, true);
             }
 
-            // <list> ... </list>
-            if (valueXml.list.length() == 1) {
-                return new ParadeValueList(beanFactory, valueXml.list.children(), false, applicationDomain);
+
+            if (valueXml.localName() == "list") {
+                return new ParadeValueList(beanFactory, valueXml.children(), false, applicationDomain);
             }
 
             // <vector type="Number"> ... </vector>
-            if (valueXml.vector.length() == 1) {
-                var vectorType:String = valueXml.vector[0].@type;
-                return new ParadeValueList(beanFactory, valueXml.vector.children(), false, applicationDomain, vectorType);
+            if (valueXml.localName() == "vector") {
+                var vectorType:String = valueXml.@type;
+                return new ParadeValueList(beanFactory, valueXml.children(), false, applicationDomain, vectorType);
             }
 
-            //<map> ... </map>
-            if (valueXml.map.length() == 1) {
-                return new ParadeValueList(beanFactory, valueXml.map.children(), true, applicationDomain);
+            if (valueXml.localName() == "map") {
+                return new ParadeValueList(beanFactory, valueXml.children(), true, applicationDomain);
             }
 
             //<xml> ... some xml <tag>..</tag> ... </xml>
             if (valueXml.localName() == "xml") {
                 return new ResolvedValue(valueXml.children()[0]);
-            }
-
-            //<property name="xml"><xml> ... some xml <tag>..</tag> ... </xml></property>
-            if (valueXml.xml.length() == 1) {
-                return new ResolvedValue(valueXml.xml.children()[0]);
-            }
-
-            //<property name="foo" ref="foo" /> 
-            if (valueXml.@ref.length() == 1) {
-                return new BeanReference(beanFactory, valueXml.@ref.toXMLString(), true);
-            }
-
-            //<property name="foo" value="foo"/> 
-            if (valueXml.@value.length() == 1) {
-                return new ResolvedValue(valueXml.@value.toXMLString());
             }
 
             //<class>com.uimteam.client.test.Foo</class>
@@ -99,21 +101,16 @@ package org.amazuzu.ioc.parade {
             }
 
             //<property> <bean name="foo" class="com.free.foo.bar" /> </property>
-            if (valueXml.bean.length() == 1) {
-                var bean:ParadeBean = new ParadeBean(beanFactory, valueXml.bean[0], false);
-                beanFactory.parade_ns::registerParadeBean(valueXml.bean[0].@name.toXMLString(), bean);
+            if (valueXml.localName() == "bean") {
+                var bean:ParadeBean = new ParadeBean(beanFactory, valueXml, false);
+                beanFactory.parade_ns::registerParadeBean(valueXml.@name.toXMLString(), bean);
                 return bean;
             }
 
-            //<property name="clazz" class="com.lala.fafa.Foo" />
-            if (valueXml.@["class"].length() == 1) {
-                return new ResolvedValue(getClass(valueXml.@["class"], applicationDomain));
-            }
-
             //<property> <class>com.lala.fafa.Foo</clas> </property>
-            if (valueXml.children()[0].localName() == "class") {
+            if (valueXml.localName() == "class") {
                 //trace("class found " + valueXml.children()[0].text());
-                return new ResolvedValue(getClass(valueXml.children()[0].text(), applicationDomain));
+                return new ResolvedValue(getClass(valueXml.text(), applicationDomain));
             }
 
             throw new IOCError("Error in XML DTD: {0}", valueXml.toXMLString());
