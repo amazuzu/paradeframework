@@ -14,5 +14,32 @@
 	<bean name="bar" class="org.amazuzu.ioc.paradetest.Bar" />
 	<bean name="baz" class="org.amazuzu.ioc.paradetest.Baz" />
 	
+	<bean name="constrList" class="org.amazuzu.ioc.paradetest.ConstructList">
+		<constructor>
+			<list>
+				<string>foo</string>
+				<string>bar</string>
+			</list>
+		</constructor>
+	</bean>
+	
+	<bean name="constrMap" class="org.amazuzu.ioc.paradetest.ConstructMap">
+		<constructor>
+			<map>
+				<property name="foo" value="foo" />
+				<property name="bar" value="bar" />
+			</map>
+		</constructor>
+	</bean>
+	
+	<bean name="constrVect" class="org.amazuzu.ioc.paradetest.ConstructVector">
+		<constructor>
+			<vector type="String">
+				<string>foo</string>
+				<string>bar</string>
+			</vector>
+		</constructor>
+	</bean>
+	
 </context>
 

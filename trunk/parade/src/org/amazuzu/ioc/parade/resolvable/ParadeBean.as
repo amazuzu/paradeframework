@@ -57,7 +57,7 @@ package org.amazuzu.ioc.parade.resolvable {
                 _singleton = true;
             }
 
-            if (beanXml.@lazy.length() == 1 && beanXml.@lazy.toXMLString() == "true") {
+            if (!_singleton || beanXml.@lazy.length() == 1 && beanXml.@lazy.toXMLString() == "true") {
                 _lazy = true;
             }
 
