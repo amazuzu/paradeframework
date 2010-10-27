@@ -40,7 +40,7 @@ package org.amazuzu.ioc.parade {
 
             //<bean name="foo" class="com.free.foo.bar.Baz" />
             if (valueXml.localName() == "bean") {
-                var bean:ParadeBean = new ParadeBean(beanFactory, valueXml, false);
+                var bean:ParadeBean = new ParadeBean(beanFactory, valueXml, false, applicationDomain);
                 beanFactory.parade_ns::registerParadeBean(valueXml.@name.toXMLString(), bean);
                 return bean;
             }
