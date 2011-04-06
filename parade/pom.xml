@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.amazuzu.ioc.parade</groupId>
+	<artifactId>parade</artifactId>
+	<name>Parade IOC</name>
+	<packaging>swc</packaging>
+	<version>0.4.3</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<final.name>tiggr</final.name>
+		<flexsdk.version>4.1.0.16248</flexsdk.version>
+		<flexmojos.version>4.0-alpha-5</flexmojos.version>
+		<slf4j.version>1.5.6</slf4j.version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>flex-mojos-repository</id>
+			<url>http://repository.sonatype.org/content/groups/flexgroup</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype</id>
+			<url>http://repository.sonatype.org/content/groups/flexgroup/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>flex-framework</artifactId>
+			<version>${flexsdk.version}</version>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${final.name}</finalName>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
+				<extensions>true</extensions>
+
+				<configuration>
+					<accessible>false</accessible>
+					<debug>true</debug>
+					<compilerWarnings>
+						<show-actionscript-warnings>true</show-actionscript-warnings>
+						<show-binding-warnings>false</show-binding-warnings>
+						<warn-duplicate-variable-def>false</warn-duplicate-variable-def>
+						<warn-missing-namespace-decl>false</warn-missing-namespace-decl>
+					</compilerWarnings>
+				</configuration>
+
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+</project>
