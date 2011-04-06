@@ -62,6 +62,7 @@
 	</bean>
 	
 	<bean name="mhBarChild" class="org.amazuzu.ioc.paradetest.Bar" inherit="mhBarProp, mhBarGroo" />
+	<bean name="mhBarChildEx" class="org.amazuzu.ioc.paradetest.Bar" inherit="mhBarProp, mhBarGroo, lala" singleton="false"/>
 
 
 </context>

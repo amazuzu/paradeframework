@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties version="1">
+<flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.BeanReference"/>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.ParadeBean"/>
@@ -11,6 +11,8 @@
     <classEntry path="org.amazuzu.ioc.parade.BeanFactory"/>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.ParadeValueList"/>
     <classEntry path="org.amazuzu.ioc.parade.resolvable.ResolvedValue"/>
+    <classEntry path="org.amazuzu.ioc.parade.resolvable.ParadeListBean"/>
+    <classEntry path="org.amazuzu.ioc.parade.resolvable.IParadeBean"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -2,10 +2,11 @@ package org.amazuzu.ioc.parade.resolvable {
     import flash.system.ApplicationDomain;
     import flash.utils.describeType;
     import flash.utils.getDefinitionByName;
-    
+
     import mx.utils.StringUtil;
-    
+
     import org.amazuzu.ioc.parade.BeanFactory;
+    import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
 
@@ -127,7 +128,7 @@ package org.amazuzu.ioc.parade.resolvable {
 
 
         public function resolved():Boolean {
-            return _template || constrList.resolved() && (_singleton && instantiated  || !_singleton);
+            return _template || constrList.resolved() && (_singleton && instantiated || !_singleton);
         }
 
         public function resolve():void {
@@ -219,7 +220,7 @@ package org.amazuzu.ioc.parade.resolvable {
 
                     if (inherit.indexOf(",") != -1) {
                         inherits = inherit.split(",");
-						
+
                     } else {
                         inherits = [ inherit ]
                     }
@@ -229,19 +230,15 @@ package org.amazuzu.ioc.parade.resolvable {
                         var father:ParadeBean = beanFactory.parade_ns::getParadeBean(StringUtil.trim(template));
 
                         if (father == null) {
-                            //beanFactory.parade_ns::notifyHasUnresolved();
+                            throw new IOCError("Definition for template '{0}' wasn't found in context. See bean of class {1}", StringUtil.trim(template), _classStr);
                             return;
                         }
-                    }
 
-                    for each (var template:String in inherits) {
-                        var father:ParadeBean = beanFactory.parade_ns::getParadeBean(StringUtil.trim(template));
                         if (!father.inherited) {
                             father.initializeProperties();
                         }
                         father.propertiesList.performInheritance(propList);
                     }
-					//beanFactory.parade_ns::notifyResolution();
                     _inherited = true;
                 }
 
