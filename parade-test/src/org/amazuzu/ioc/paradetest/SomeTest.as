@@ -1,9 +1,10 @@
 package org.amazuzu.ioc.paradetest {
     import flash.utils.describeType;
-    
+
     import flexunit.framework.TestCase;
-    
+
     import org.amazuzu.ioc.parade.BeanFactory;
+    import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.paradetest.mixtestcase.B;
     import org.amazuzu.ioc.paradetest.mixtestcase.D;
     import org.amazuzu.ioc.paradetest.recursion.Ins1;
@@ -51,12 +52,12 @@ package org.amazuzu.ioc.paradetest {
             var factory:BeanFactory = new TestBeanFactory(constructor);
             factory.loadContext();
             assertEquals("foo(bar()[null],baz()[null])[baz()[FREE]]", factory.getBean("foo"));
-			assertNotNull((factory.getBean("constrList") as ConstructList).getList());
-			assertNotNull((factory.getBean("constrMap") as ConstructMap).getMap());
-			assertNotNull((factory.getBean("constrVect") as ConstructVector).getVector());
+            assertNotNull((factory.getBean("constrList") as ConstructList).getList());
+            assertNotNull((factory.getBean("constrMap") as ConstructMap).getMap());
+            assertNotNull((factory.getBean("constrVect") as ConstructVector).getVector());
         }
 
-       public function testCyclic():void {
+        public function testCyclic():void {
             var factory:BeanFactory = new TestBeanFactory(cyclic);
             factory.loadContext();
             assertNotNull("groo", factory.getBean("groo") as Groo);
@@ -169,6 +170,15 @@ package org.amazuzu.ioc.paradetest {
 
             assertNotNull((factory.getBean("mhBarChild") as Bar).groo);
             assertNotNull((factory.getBean("mhBarChild") as Bar).prop1);
+
+            var wasError:Boolean = false;
+            try {
+                factory.getBean("mhBarChildEx")
+                wasError = false;
+            } catch (e:IOCError) {
+                wasError = true;
+            }
+            assertTrue(wasError);
 
 
         }
