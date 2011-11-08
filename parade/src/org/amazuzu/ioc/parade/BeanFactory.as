@@ -1,26 +1,30 @@
 package org.amazuzu.ioc.parade {
     import flash.system.ApplicationDomain;
     import flash.utils.describeType;
-    
+
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.resolvable.ParadeBean;
 
     public class BeanFactory {
-        private var predefinedBeans:Object /* of Beans */ ;
-        private var metaBeans:Object /* of BeanMeta */ ;
+        private var predefinedBeans:Object /* of Beans */;
+
+        private var metaBeans:Object /* of BeanMeta */;
 
         private var somethingResolved:Boolean;
+
         private var hasUnresolved:Boolean;
 
         private var _resolvablesFactory:ResolvablesFactory = null;
 
         private var _passives:Array;
 
-        protected function getContextResourceClasses():Array /* of Class*/  {
+        protected var _testMode:Boolean = false;
+
+        protected function getContextResourceClasses():Array /* of Class*/ {
             throw new IOCError("Illegal use of IoC", null);
         }
 
-        protected function getSubscribers():Array /* of ISubscriber */  {
+        protected function getSubscribers():Array /* of ISubscriber */ {
             return null;
         }
 
@@ -45,7 +49,7 @@ package org.amazuzu.ioc.parade {
             passiveInitialize();
         }
 
-        public function loadBeanContext(contextResources:Array /* of XML*/ , applicationDomain:ApplicationDomain = null):void {
+        public function loadBeanContext(contextResources:Array /* of XML*/, applicationDomain:ApplicationDomain = null):void {
 
 
             for each (var contextResource:XML in contextResources) {
@@ -80,10 +84,10 @@ package org.amazuzu.ioc.parade {
                 hasUnresolved = false;
                 somethingResolved = false;
                 for (var beanName:String in metaBeans) {
-					var bean:ParadeBean = metaBeans[beanName] as ParadeBean;
+                    var bean:ParadeBean = metaBeans[beanName] as ParadeBean;
                     if (!bean.resolved()) {
                         parade_ns::notifyHasUnresolved();
-						
+
                         bean.resolve();
                     }
                 }
@@ -94,7 +98,7 @@ package org.amazuzu.ioc.parade {
             if (hasUnresolved) {
                 var msg:String = "";
                 for (var beanName:String in metaBeans) {
-                    if (!(metaBeans[beanName]as ParadeBean).resolved()) {
+                    if (!(metaBeans[beanName] as ParadeBean).resolved()) {
                         if (msg == "") {
                             msg = beanName;
                         } else {
@@ -105,7 +109,7 @@ package org.amazuzu.ioc.parade {
                 throw new IOCError("Bean Factory unable to resolve dependencies: {0}", msg);
             } else {
                 for (var beanName:String in metaBeans) {
-					var bean:ParadeBean = metaBeans[beanName] as ParadeBean;
+                    var bean:ParadeBean = metaBeans[beanName] as ParadeBean;
                     if (!bean.lazy && !bean.initialized) {
                         bean.initializeProperties();
                         bean.initialized = true;
@@ -136,7 +140,7 @@ package org.amazuzu.ioc.parade {
         }
 
         parade_ns function getParadeBean(beanName:String):ParadeBean {
-            return metaBeans[beanName]as ParadeBean;
+            return metaBeans[beanName] as ParadeBean;
         }
 
         parade_ns function getPredefinedBean(beanName:String):Object {
@@ -145,11 +149,15 @@ package org.amazuzu.ioc.parade {
 
         public function getBean(beanName:String):Object {
             if (!parade_ns::containsParadeBean(beanName) && !parade_ns::containsPredefinedBean(beanName)) {
-                throw new IOCError("bean \"{0}\" wasn't registered in context", beanName);
+                if (!_testMode) {
+                    throw new IOCError("bean \"{0}\" wasn't registered in context", beanName);
+                } else {
+                    return null;
+                }
             }
 
             if (parade_ns::containsParadeBean(beanName)) {
-                return (metaBeans[beanName]as ParadeBean).value;
+                return (metaBeans[beanName] as ParadeBean).value;
             } else {
                 return predefinedBeans[beanName];
             }
@@ -164,10 +172,10 @@ package org.amazuzu.ioc.parade {
             for each (var passive:* in _passives) {
                 initializeObject(passive);
             }
-			
-			for each (var passive:* in predefinedBeans) {
-				initializeObject(passive);
-			}
+
+            for each (var passive:* in predefinedBeans) {
+                initializeObject(passive);
+            }
         }
 
         private function initializeObject(object:Object):void {
