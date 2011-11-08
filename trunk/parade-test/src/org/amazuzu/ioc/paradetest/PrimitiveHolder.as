@@ -20,9 +20,9 @@ package org.amazuzu.ioc.paradetest
 		
 		public var numVector:Vector.<Number>;
 		
-		public function PrimitiveHolder()
+		public function PrimitiveHolder(foo:int)
 		{
-			
+			trace(""+foo+" "+(foo as int));
 		}
 
 	}
