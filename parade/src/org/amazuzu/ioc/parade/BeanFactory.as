@@ -245,5 +245,9 @@ package org.amazuzu.ioc.parade {
             predefinedBeans[beanName] = instance;
         }
 
+        parade_ns function get testMode():Boolean {
+            return _testMode;
+        }
+
     }
 }
