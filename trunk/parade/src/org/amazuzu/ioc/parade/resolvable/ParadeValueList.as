@@ -112,7 +112,7 @@ package org.amazuzu.ioc.parade.resolvable {
                 if (!property.resolved()) {
                     property.resolve();
                 }
-                if (!property.resolved()) {
+                if (!beanFactory.parade_ns::testMode && !property.resolved()) {
                     throw new IOCError("value {0} couldnt be resolved.", property);
                 }
                 property.initializeProperties();
