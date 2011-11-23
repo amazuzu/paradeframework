@@ -112,6 +112,9 @@ package org.amazuzu.ioc.parade {
                     var bean:ParadeBean = metaBeans[beanName] as ParadeBean;
                     if (!bean.lazy && !bean.initialized) {
                         bean.initializeProperties();
+
+
+                      
                         bean.initialized = true;
                     }
                 }

@@ -6,11 +6,14 @@ package org.amazuzu.ioc.parade.resolvable {
     import mx.utils.StringUtil;
 
     import org.amazuzu.ioc.parade.BeanFactory;
+    import org.amazuzu.ioc.parade.IBeanNameAware;
     import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
 
     public class ParadeBean implements IResolvable {
+
+        private var _beanName:String = null;
 
         private var beanFactory:BeanFactory = null;
 
@@ -45,6 +48,12 @@ package org.amazuzu.ioc.parade.resolvable {
             this.applicationDomain = applicationDomain;
 
             this._template = _template;
+
+            if (beanXml.attribute("name").toXMLString() != "") {
+                _beanName = beanXml.attribute("name").toXMLString();
+
+            } else {
+            }
 
             if (!_template && beanXml.attribute("class").toXMLString() != "") {
                 _classStr = beanXml.attribute("class").toXMLString();
@@ -185,6 +194,9 @@ package org.amazuzu.ioc.parade.resolvable {
             }
 
 
+            if (_value is IBeanNameAware) {
+                (_value as IBeanNameAware).beanName = _beanName;
+            }
 
 
 

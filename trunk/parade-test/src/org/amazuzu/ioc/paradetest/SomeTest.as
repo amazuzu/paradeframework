@@ -208,6 +208,8 @@ package org.amazuzu.ioc.paradetest {
             assertEquals(holder.numVector[0], 100.2);
             assertEquals(holder.numVector[1], 100.3);
             assertEquals(holder.numVector[2], 100.4);
+            
+            assertEquals("primitive", holder.myBeanName);
 
 
 
