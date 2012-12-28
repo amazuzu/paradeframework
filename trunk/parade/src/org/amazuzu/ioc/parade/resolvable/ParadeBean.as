@@ -6,8 +6,9 @@ package org.amazuzu.ioc.parade.resolvable {
     import mx.utils.StringUtil;
 
     import org.amazuzu.ioc.parade.BeanFactory;
+import org.amazuzu.ioc.parade.IBeanFactoryAware;
     import org.amazuzu.ioc.parade.IBeanNameAware;
-    import org.amazuzu.ioc.parade.error.IOCError;
+import org.amazuzu.ioc.parade.error.IOCError;
     import org.amazuzu.ioc.parade.error.IOCInternalError;
     import org.amazuzu.ioc.parade.parade_ns;
 
@@ -193,11 +194,13 @@ package org.amazuzu.ioc.parade.resolvable {
                     break;
             }
 
+            if(_value is IBeanFactoryAware){
+                (_value as IBeanFactoryAware).beanFactory = beanFactory;
+            }
 
             if (_value is IBeanNameAware) {
                 (_value as IBeanNameAware).beanName = _beanName;
             }
-
 
 
             if (_singleton && instantiated) {
