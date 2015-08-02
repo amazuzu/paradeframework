@@ -1,0 +1,1 @@
+Yet another ioc framework for flex, aimed to satisfy your IoC needs.
